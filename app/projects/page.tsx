@@ -8,12 +8,20 @@ import {
 import { formatDate } from "@/lib/utils";
 import { createClient } from "@/utils/supabase/server";
 import Link from "next/link";
+import { redirect } from "next/navigation";
 
 export default async function Page() {
   const supabase = await createClient();
-  const { data: projects } = await supabase.from("projects").select();
 
-  console.log(projects);
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
+  if (!user) {
+    return redirect("/sign-in");
+  }
+  
+  const { data: projects } = await supabase.from("projects").select();
 
   if (!projects) {
     return <p>No projects found</p>;
