@@ -70,6 +70,7 @@ async function ProjectPage({
   return (
     <div className="flex flex-col gap-2 w-full">
       <h1 className="font-bold text-2xl">Стадии</h1>
+      
       {stages.map((stage, index) => (
         <div key={index} className="flex items-start space-x-4 rounded-xl //shadow-md border p-6">
           <div>{stage.icon}</div>
