@@ -12,7 +12,7 @@ export default async function Signup(props: {
   const searchParams = await props.searchParams;
   if ("message" in searchParams) {
     return (
-      <div className="w-full flex-1 flex items-center h-screen sm:max-w-md justify-center gap-2 p-4">
+      <div className="flex h-screen w-full flex-1 items-center justify-center gap-2 p-4 sm:max-w-md">
         <FormMessage message={searchParams} />
       </div>
     );
@@ -20,18 +20,18 @@ export default async function Signup(props: {
 
   return (
     <>
-      <form className="flex flex-col min-w-64 max-w-64 mx-auto">
-        <h1 className="text-2xl font-medium">Sign up</h1>
-        <p className="text-sm text text-foreground">
-          Already have an account?{" "}
-          <Link className="text-primary font-medium underline" href="/sign-in">
-            Sign in
+      <form className="mx-auto flex min-w-64 max-w-64 flex-col">
+        <h1 className="text-2xl font-medium">Зарегистрироваться</h1>
+        <p className="text text-sm text-foreground">
+          Уже есть аккаунт?{" "}
+          <Link className="font-medium text-primary underline" href="/sign-in">
+            Войти
           </Link>
         </p>
-        <div className="flex flex-col gap-2 [&>input]:mb-3 mt-8">
+        <div className="mt-8 flex flex-col gap-2 [&>input]:mb-3">
           <Label htmlFor="email">Email</Label>
           <Input name="email" placeholder="you@example.com" required />
-          <Label htmlFor="password">Password</Label>
+          <Label htmlFor="password">Пароль</Label>
           <Input
             type="password"
             name="password"
@@ -40,7 +40,7 @@ export default async function Signup(props: {
             required
           />
           <SubmitButton formAction={signUpAction} pendingText="Signing up...">
-            Sign up
+            Зарегистрироваться
           </SubmitButton>
           <FormMessage message={searchParams} />
         </div>

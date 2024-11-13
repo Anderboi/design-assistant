@@ -1,6 +1,6 @@
 import React from 'react'
 import { Modal } from '@/components/Modal'
-import CreateProjectForm from '../../create/CreateProjectForm'
+import CreateProjectForm from '../../create/_components/CreateProjectForm'
 
 function CreateProjectPage() {
   return (
