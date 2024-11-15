@@ -24,7 +24,7 @@ import { Label } from "@/components/ui/label";
 import { PhoneInput } from "@/components/ui/phone-input";
 import { createClient } from "@/utils/supabase/client";
 
-export default function CreateProjectForm() {
+export default function CreateProjectForm({ setIsOpen }: { setIsOpen: any }) {
   const [message, setMessage] = useState("");
   const [errors, setErrors] = useState({});
   const [isClient, setIsClient] = useState(false);
@@ -102,27 +102,30 @@ export default function CreateProjectForm() {
     setMessage("");
     setErrors({});
 
-    const createdProject = await createProject(values);
-    if (createdProject) {
+    const createdProjectId = await createProject(values);
+
+    if (createdProjectId) {
       form.reset();
+      setIsOpen(false);
       router.push("/projects");
-      toast.success("Вы создали проект", {
+      toast.success("Вы создали проект!", {
         description: new Date().toLocaleString(),
         action: {
           label: "Перейти к проекту",
           onClick: () => {
             router.push(
-              `/projects`,
-              //   /${createProject.id}?&projectId=${createProject.id}
+              `/projects/${createdProjectId}?&projectId=${createdProjectId}`,
             );
           },
         },
       });
+    } else {
+      setMessage("Не удалось создать проект. Попробуйте еще раз.");
     }
   }
 
   return (
-    <div>
+    <div className="overflow-y-auto">
       {message ? <h2 className="text-2xl">{message}</h2> : null}
 
       {errors ? (
@@ -135,7 +138,7 @@ export default function CreateProjectForm() {
 
       <FormProvider {...form}>
         <form
-          className="space-y-4"
+          className="space-y-2"
           onSubmit={(e) => {
             e.preventDefault();
             form.handleSubmit(onSubmit)();
@@ -263,7 +266,7 @@ export default function CreateProjectForm() {
             />
           </>
 
-          <div className="flex gap-4">
+          <div className="flex gap-4 pt-4">
             <Button type="submit">Создать</Button>
             <Button
               type="button"

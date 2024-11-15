@@ -1,12 +1,11 @@
 "use client";
 
-import { Dialog, DialogOverlay, DialogContent } from "@/components/ui/dialog";
+import { Dialog, DialogOverlay, DialogContent, DialogTitle } from "@/components/ui/dialog";
 import { AlertConfirmation } from "./AlertConfirmation";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import { DialogTitle } from "@radix-ui/react-dialog";
 
-export function Modal({ children }: { children: React.ReactNode }) {
+export function Modal({ open, children }: {open:boolean, children: React.ReactNode }) {
   const [showExitConfirmation, setShowExitConfirmation] = useState(false);
   const router = useRouter();
 
@@ -24,9 +23,9 @@ export function Modal({ children }: { children: React.ReactNode }) {
   };
 
   return (
-    <Dialog defaultOpen={true} open={true} onOpenChange={handleOpenChange}>
-      <DialogOverlay>
-        <DialogContent className="overflow-y-hidden rounded-2xl">
+    <Dialog defaultOpen={true} open={open} onOpenChange={handleOpenChange}>
+      <DialogOverlay className="overflow-y-auto">
+        <DialogContent className="overflow-y-auto h-full max-h-[600px] rounded-2xl">
           <DialogTitle className="hidden" />
           <AlertConfirmation
             open={showExitConfirmation}
