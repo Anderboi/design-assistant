@@ -73,7 +73,7 @@ export async function createProject(project: Project) {
     }
 
     const projectId = project.id;
-    
+
     console.log(projectId);
 
     //? Шаг 3: Добавить клиента в project_members как invited client
@@ -129,4 +129,19 @@ export async function createProject(project: Project) {
     console.error("Не удалось создать проект:", error);
     return { message: "Ошибка создания проекта" };
   }
+}
+
+export async function getCurrentProject({ projectId }: { projectId: string }) {
+  const supabase = await createClient();
+
+  const { data: project, error: projectError } = await supabase
+    .from("projects")
+    .select()
+    .eq("id", projectId)
+    .single();
+
+  if (projectError) {
+    throw new Error(projectError.message);
+  }
+  return project;
 }
