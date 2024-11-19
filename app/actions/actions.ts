@@ -74,7 +74,56 @@ export async function createProject(project: Project) {
 
     const projectId = project.id;
 
-    console.log(projectId);
+    //? шаблон стадий
+    const stagesTemplate = [
+      {
+        stage_name: "Техническое задание",
+      },
+      {
+        stage_name: "Договор",
+      },
+      {
+        stage_name: "Авансовый платеж",
+      },
+      {
+        stage_name: "Обмер помещений",
+      },
+      {
+        stage_name: "Планировочное решение",
+      },
+      {
+        stage_name: "Коллаж",
+      },
+      {
+        stage_name: "Визуализация",
+      },
+      {
+        stage_name: "Чертежи и схемы",
+      },
+      {
+        stage_name: "Инженерные проекты",
+      },
+      {
+        stage_name: "Комплектация",
+      },
+      {
+        stage_name: "Авторский контроль",
+      },
+    ];
+
+    //? Шаг 3,1. Добавить стадии
+    const { data: stages, error: stagesError } = await supabase
+      .from("project_stages")
+      .insert(
+        stagesTemplate.map((stage, index) => ({
+          project_id: projectId,
+          stage_name: stage.stage_name,
+          order: index + 1,
+        })),
+      )
+      .select();
+
+    if (stagesError) throw new Error("Ошибка добавления стадий");
 
     //? Шаг 3: Добавить клиента в project_members как invited client
     const { error: memberError } = await supabase
@@ -144,4 +193,18 @@ export async function getCurrentProject({ projectId }: { projectId: string }) {
     throw new Error(projectError.message);
   }
   return project;
+}
+
+export async function getProjectStages({ projectId }: { projectId: string }) {
+  const supabase = await createClient();
+
+  const { data: stageData, error: stageError } = await supabase
+    .from("project_stages")
+    .select("id, is_completed, updated_at")
+    .eq("project_id", projectId);
+
+  if (stageError) {
+    throw new Error(stageError.message);
+  }
+  return stageData;
 }
