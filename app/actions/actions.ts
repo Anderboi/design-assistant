@@ -78,6 +78,7 @@ export async function createProject(project: Project) {
     const stagesTemplate = [
       {
         stage_name: "Техническое задание",
+        stage_status: "active",
       },
       {
         stage_name: "Договор",
@@ -118,6 +119,7 @@ export async function createProject(project: Project) {
         stagesTemplate.map((stage, index) => ({
           project_id: projectId,
           stage_name: stage.stage_name,
+          stage_status: stage.stage_status || "blocked",
           order: index + 1,
         })),
       )
@@ -200,7 +202,7 @@ export async function getProjectStages({ projectId }: { projectId: string }) {
 
   const { data: stageData, error: stageError } = await supabase
     .from("project_stages")
-    .select("id, is_completed, updated_at")
+    .select("id, is_completed, updated_at, stage_status, order")
     .eq("project_id", projectId);
 
   if (stageError) {

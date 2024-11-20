@@ -6,4 +6,6 @@ export type Stage = {
   description: string;
   is_completed?: boolean;
   updated_at?: string;
+  stage_status?: "blocked" | "active" | "done";
+  order?: number;
 };

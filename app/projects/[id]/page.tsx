@@ -15,7 +15,7 @@ import { getCurrentProject, getProjectStages } from "@/app/actions/actions";
 import Link from "next/link";
 import { Stage } from "@/types/types";
 
-const stages: Stage[] = [
+const staticStages: Stage[] = [
   {
     id: 1,
     title: "Техническое задание",
@@ -107,36 +107,42 @@ async function ProjectPage({
   };
 }) {
   const projectId = searchParams.projectId;
-  const stagesStatus = await getProjectStages({
+
+  const dynamicStages = await getProjectStages({
     projectId,
   });
 
-  if (!stagesStatus) {
+  if (!dynamicStages) {
     return <div>Проект не найден</div>;
   }
 
-  const stagesWithCompletion = stages.map((stage) => {
-    const status = stagesStatus.find((s) => s.id === stage.id) || {
-      is_completed: false,
-      updated_at: "",
-    };
+  const stagesWithCompletion = staticStages.map((staticStage) => {
+    const dynamicStage = dynamicStages.find(
+      (stage) => stage.order === staticStage.id,
+    );
+
     return {
-      ...stage,
-      ...status,
+      ...staticStage,
+      stage_status: dynamicStage?.stage_status || "blocked",
+      is_completed: dynamicStage?.is_completed || false,
+      updated_at: dynamicStage?.updated_at || null,
     };
   });
+
+  console.log(stagesWithCompletion);
 
   return (
     <div className="flex w-full flex-col gap-2">
       <h1 className="text-2xl font-bold">Стадии</h1>
 
-      {stages.map((stage, index) => (
+      {stagesWithCompletion.map((stage, index) => (
         <Link
           key={index}
           href={`${projectId}/${stage.href}` || ""}
           replace={false}
+          className={`${stage.stage_status === "blocked" ? "cursor-not-allowed bg-secondary" : "border hover:shadow-lg"} rounded-xl p-6`}
         >
-          <div className="//shadow-md flex items-start space-x-4 rounded-xl border p-6">
+          <div className="//shadow-md flex items-start space-x-4">
             <div>{stage.icon}</div>
             <div className="flex-1 space-y-1">
               <h2 className="text-xl font-medium leading-none">
@@ -144,9 +150,6 @@ async function ProjectPage({
               </h2>
               <p className="text-sm text-muted-foreground">
                 {stage.description}
-              </p>
-              <p className="text-sm text-muted-foreground">
-                {stage.is_completed ? "Готово" : "Не готово"}
               </p>
             </div>
           </div>
