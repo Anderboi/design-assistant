@@ -1,11 +1,13 @@
 export type Stage = {
-  id: number;
+  id?: string;
   title: string;
-  icon: React.ReactElement | null;
+  icon: any ;
   href: string;
-  description: string;
+  description?: string;
   is_completed?: boolean;
   updated_at?: string;
   stage_status?: "blocked" | "active" | "done";
   order?: number;
+  type?: "action" | "form";
+  stage_blocks?: any[];
 };

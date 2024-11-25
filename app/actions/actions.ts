@@ -1,5 +1,6 @@
 "use server";
 
+import { staticStagesTemplate } from "@/lib/templates";
 import { Project, ProjectSchema } from "@/schemas/CreateProject";
 import { createClient } from "@/utils/supabase/server";
 import { v4 as uuidv4 } from "uuid";
@@ -74,51 +75,13 @@ export async function createProject(project: Project) {
 
     const projectId = project.id;
 
-    //? шаблон стадий
-    const stagesTemplate = [
-      {
-        stage_name: "Техническое задание",
-        stage_status: "active",
-      },
-      {
-        stage_name: "Договор",
-      },
-      {
-        stage_name: "Авансовый платеж",
-      },
-      {
-        stage_name: "Обмер помещений",
-      },
-      {
-        stage_name: "Планировочное решение",
-      },
-      {
-        stage_name: "Коллаж",
-      },
-      {
-        stage_name: "Визуализация",
-      },
-      {
-        stage_name: "Чертежи и схемы",
-      },
-      {
-        stage_name: "Инженерные проекты",
-      },
-      {
-        stage_name: "Комплектация",
-      },
-      {
-        stage_name: "Авторский контроль",
-      },
-    ];
-
-    //? Шаг 3,1. Добавить стадии
+    //? Шаг 3: Добавить стадии
     const { data: stages, error: stagesError } = await supabase
       .from("project_stages")
       .insert(
-        stagesTemplate.map((stage, index) => ({
+        staticStagesTemplate.map((stage, index) => ({
           project_id: projectId,
-          stage_name: stage.stage_name,
+          stage_name: stage.title,
           stage_status: stage.stage_status || "blocked",
           order: index + 1,
         })),
@@ -127,7 +90,9 @@ export async function createProject(project: Project) {
 
     if (stagesError) throw new Error("Ошибка добавления стадий");
 
-    //? Шаг 3: Добавить клиента в project_members как invited client
+
+
+    //? Шаг 4: Добавить клиента в project_members как invited client
     const { error: memberError } = await supabase
       .from("project_members")
       .insert({
@@ -143,7 +108,7 @@ export async function createProject(project: Project) {
       return { message: "Создание участника проекта не получилось" };
     }
 
-    //? Шаг 4: Если пользователя нет, добавляем его в таблицу приглашений и в project_members
+    //? Шаг 5: Если пользователя нет, добавляем его в таблицу приглашений и в project_members
     if (!existingClient) {
       const { error: inviteError } = await supabase
         .from("invites")
@@ -155,7 +120,7 @@ export async function createProject(project: Project) {
       }
     }
 
-    //? Шаг 5: Отправляем приглашение на почту
+    //? Шаг 6: Отправляем приглашение на почту
     // const { error: inviteEmailError } =
     //   await supabase.auth.admin.inviteUserByEmail(email, {
     //     redirectTo: `/projects/${projectId}`,
@@ -210,3 +175,70 @@ export async function getProjectStages({ projectId }: { projectId: string }) {
   }
   return stageData;
 }
+
+export async function fetchStageBlocks(stageId: string) {
+  const supabase = await createClient();
+
+  const { data, error } = await supabase
+    .from("stage_blocks")
+    .select("id, block_name, is_approved")
+    .eq("stage_id", stageId);
+
+  if (error) {
+    console.error("Error fetching stage blocks:", error);
+    return [];
+  }
+  if (!data) {
+    return null;
+  }
+
+  return data;
+}
+
+export async function fetchBlockFields(blockId: string) {
+  const supabase = await createClient();
+
+  const { data, error } = await supabase
+    .from("block_fields")
+    .select("field_name, value")
+    .eq("block_id", blockId);
+
+  if (error) {
+    console.error("Error fetching block fields:", error);
+    return [];
+  }
+  return data;
+}
+
+//? Переход на следующую стадию
+export const moveToNextStage = async (
+  currentStageId: number,
+  nextStageId: number,
+) => {
+  const supabase = await createClient();
+  // Завершаем текущую стадию
+  await supabase
+    .from("project_stages")
+    .update({ stage_state: "done" })
+    .eq("id", currentStageId);
+
+  // Активируем следующую стадию
+  await supabase
+    .from("project_stages")
+    .update({ stage_state: "active" })
+    .eq("id", nextStageId);
+};
+
+//? Действие для Action Стадии (Например - Оплаты)
+export const handleActionComplete = async (stageId: number) => {
+  const supabase = await createClient();
+
+  const { error } = await supabase
+    .from("project_stages")
+    .update({ action_state: "completed", stage_state: "done" })
+    .eq("id", stageId);
+
+  if (!error) {
+    // Обновить UI, например, вызвать перезагрузку данных
+  }
+};

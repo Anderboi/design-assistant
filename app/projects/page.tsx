@@ -22,18 +22,18 @@ export default async function Page() {
   if (!user) {
     return redirect("/sign-in");
   }
-  
+
   const { data: projects } = await supabase.from("projects").select();
 
   if (!projects) {
     return <p>No projects found</p>;
   } else {
     return (
-      <div className="w-full flex flex-col gap-2">
-        <h1 className="font-semibold text-3xl">Проекты</h1>
+      <div className="flex w-full flex-col gap-2">
+        <h1 className="text-3xl font-bold">Проекты</h1>
         <Link href={`projects/create`}>
           <Button>
-            <Plus/>
+            <Plus />
             Создать проект
           </Button>
         </Link>
@@ -42,7 +42,7 @@ export default async function Page() {
             key={project.id}
             href={`/projects/${project.id}?&projectId=${project.id}`}
           >
-            <Card className="//shadow-lg hover:shadow-md hover:bg-popover">
+            <Card className="//shadow-lg hover:bg-popover hover:shadow-md">
               <CardHeader>
                 <CardTitle className="line-clamp-1 sm:line-clamp-2 sm:min-h-[2lh]">
                   {`Проект №${project.id}`}
