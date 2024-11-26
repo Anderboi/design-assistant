@@ -23,7 +23,9 @@ export default async function Page() {
     return redirect("/sign-in");
   }
 
-  const { data: projects } = await supabase.from("projects").select();
+  const { data: projects } = await supabase
+    .from("projects")
+    .select();
 
   if (!projects) {
     return <p>No projects found</p>;
@@ -37,7 +39,7 @@ export default async function Page() {
             Создать проект
           </Button>
         </Link>
-        {projects.map((project) => (
+        {projects.map((project, index) => (
           <Link
             key={project.id}
             href={`/projects/${project.id}?&projectId=${project.id}`}
@@ -45,7 +47,8 @@ export default async function Page() {
             <Card className="//shadow-lg hover:bg-popover hover:shadow-md">
               <CardHeader>
                 <CardTitle className="line-clamp-1 sm:line-clamp-2 sm:min-h-[2lh]">
-                  {`Проект №${project.id}`}
+                  {project.address}
+                  {/* {`Проект №${index + 1}`} */}
                 </CardTitle>
                 <CardDescription className="line-clamp-2 text-base sm:min-h-[2lh]">
                   {project.address}

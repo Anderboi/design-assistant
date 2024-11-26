@@ -19,7 +19,7 @@ export function Modal({
   title,
   trigger,
 }: {
-  open?: boolean;
+  open: boolean;
   children: React.ReactNode;
   title?: string;
   trigger?: React.ReactNode;

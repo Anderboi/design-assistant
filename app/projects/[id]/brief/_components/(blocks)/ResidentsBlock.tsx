@@ -1,0 +1,288 @@
+"use client";
+
+import { Button } from "@/components/ui/button";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+} from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { Switch } from "@/components/ui/switch";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { Trash2Icon } from "lucide-react";
+import React from "react";
+import { useFieldArray, useForm } from "react-hook-form";
+import { z } from "zod";
+
+const ResidentsSchema = z.object({
+  adults: z
+    .array(
+      z.object({
+        height: z
+          .number({ invalid_type_error: "Введите рост числом" })
+          .positive("Рост должен быть положительным")
+          .lte(250, "Рост не может быть больше 250 см"),
+        gender: z.string(),
+      }),
+    )
+    .min(1, "Должен быть хотя бы один взрослый"),
+  children: z.array(
+    z.object({
+      age: z
+        .number({ invalid_type_error: "Введите возраст числом" })
+        .positive("Возраст должен быть положительным")
+        .lte(18, "Возраст должен быть меньше 18 лет"),
+    }),
+  ),
+  hobbies: z.string().optional(),
+  healthIssues: z.string().optional(),
+  hasPets: z.boolean(),
+  petDetails: z.string().optional(),
+});
+
+type ResidentsFormValues = z.infer<typeof ResidentsSchema>;
+
+function ResidentsBlock() {
+  const form = useForm<ResidentsFormValues>({
+    resolver: zodResolver(ResidentsSchema),
+    defaultValues: {
+      adults: [{ height: 0, gender: "" }],
+      children: [],
+      hasPets: false,
+      petDetails: "",
+    },
+  });
+  const {
+    control,
+    watch,
+    formState: { errors },
+  } = form;
+  const {
+    fields: adultFields,
+    append: addAdult,
+    remove: removeAdult,
+  } = useFieldArray({
+    control,
+    name: "adults",
+  });
+
+  const {
+    fields: childFields,
+    append: addChild,
+    remove: removeChild,
+  } = useFieldArray({
+    control,
+    name: "children",
+  });
+
+  const watchHasPets = watch("hasPets");
+
+  function onSubmit(values: ResidentsFormValues) {
+    console.log(values);
+  }
+
+  return (
+    <Form {...form}>
+      <form className="space-y-4">
+        <h2 className="text-xl font-bold">Информация о проживающих</h2>
+
+        {/* Взрослые */}
+        <div className="space-y-2 rounded-xl border p-4">
+          <h3 className="font-medium">Взрослые</h3>
+          {adultFields.map((field, index) => (
+            <div
+              key={field.id}
+              className="grid grid-cols-5 items-end space-x-2"
+            >
+              <FormField
+                control={control}
+                name={`adults.${index}.height`}
+                render={({ field }) => (
+                  <FormItem className="col-span-2">
+                    <FormLabel>Рост</FormLabel>
+                    <FormControl>
+                      <Input
+                        {...field}
+                        placeholder="Рост (см)"
+                        type="number"
+                        className="w-full"
+                        onFocus={(e) => e.target.select()}
+                      />
+                    </FormControl>
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={control}
+                name={`adults.${index}.gender`}
+                render={({ field }) => (
+                  <FormItem className="col-span-2">
+                    {/* <FormLabel>Пол</FormLabel> */}
+                    <FormControl>
+                      <Select onValueChange={field.onChange}>
+                        <SelectTrigger className="w-full">
+                          <SelectValue placeholder="Пол" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="man">Мужской</SelectItem>
+                          <SelectItem value="woman">Женский</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </FormControl>
+                  </FormItem>
+                )}
+              />
+
+              <Button
+                className="col-span-1"
+                type="button"
+                onClick={() => removeAdult(index)}
+                variant="destructive"
+              >
+                <Trash2Icon size={20} />
+              </Button>
+            </div>
+          ))}
+          <Button
+            type="button"
+            onClick={() => addAdult({ height: 0, gender: "" })}
+          >
+            Добавить взрослого
+          </Button>
+        </div>
+        {errors.adults && (
+          <p className="text-red-600">{errors.adults.message}</p>
+        )}
+
+        {/* Дети */}
+        <div className="space-y-2 rounded-xl border p-4">
+          <h3 className="font-medium">Дети</h3>
+          {childFields.map((field, index) => (
+            <div key={field.id} className="flex w-full items-end space-x-2">
+              <FormField
+                control={control}
+                name={`children.${index}.age`}
+                render={({ field }) => (
+                  <FormItem className="w-full">
+                    <FormLabel>Возраст</FormLabel>
+                    <FormControl>
+                      <Input
+                        {...field}
+                        placeholder="Возраст"
+                        type="number"
+                        className="w-full"
+                      />
+                    </FormControl>
+                  </FormItem>
+                )}
+              />
+
+              <Button
+                type="button"
+                onClick={() => removeChild(index)}
+                variant="destructive"
+              >
+                <Trash2Icon size={20} />
+              </Button>
+            </div>
+          ))}
+          <Button type="button" onClick={() => addChild({ age: 0 })}>
+            Добавить ребенка
+          </Button>
+        </div>
+
+        {/* Увлечения */}
+        <div>
+          <FormField
+            control={control}
+            name="hobbies"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Увлечения</FormLabel>
+                <FormControl>
+                  <Input {...field} placeholder="Увлечения членов семьи" />
+                </FormControl>
+              </FormItem>
+            )}
+          />
+        </div>
+
+        {/* Ограничения по здоровью */}
+        <div>
+          <FormField
+            control={control}
+            name="healthIssues"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Ограничения по здоровью</FormLabel>
+                <FormControl>
+                  <Input {...field} placeholder="Укажите ограничения" />
+                </FormControl>
+              </FormItem>
+            )}
+          />
+        </div>
+
+        {/* Домашние животные */}
+        <div className="space-y-4 pb-2">
+          <FormField
+            control={control}
+            name="hasPets"
+            render={({ field }) => (
+              <FormItem>
+                {/* <FormLabel>Есть домашние животные?</FormLabel> */}
+                <FormControl>
+                  <div className="flex items-center gap-4">
+                    <Switch
+                      checked={field.value}
+                      onCheckedChange={field.onChange}
+                    />
+                    <span className="text-sm">Есть домашние животные?</span>
+                  </div>
+                </FormControl>
+              </FormItem>
+            )}
+          />
+
+          {watchHasPets && (
+            <div>
+              <FormField
+                control={control}
+                name="petDetails"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>
+                      Что предусмотреть для домашних животных?
+                    </FormLabel>
+                    <FormControl>
+                      <Input
+                        {...field}
+                        placeholder="Опишите животных и их потребности"
+                      />
+                    </FormControl>
+                  </FormItem>
+                )}
+              />
+            </div>
+          )}
+        </div>
+
+        {/* Кнопка отправки */}
+        <Button type="submit">
+          Сохранить
+        </Button>
+      </form>
+    </Form>
+  );
+}
+
+export default ResidentsBlock;

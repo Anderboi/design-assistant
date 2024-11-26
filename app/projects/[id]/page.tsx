@@ -19,6 +19,9 @@ async function ProjectPage({
     projectId,
   });
 
+  console.log(dynamicStages);
+  
+
   if (!dynamicStages) {
     return <div>Проект не найден</div>;
   }

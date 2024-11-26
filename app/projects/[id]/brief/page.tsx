@@ -13,6 +13,7 @@ import {
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+import ResidentsBlock from "./_components/(blocks)/ResidentsBlock";
 
 async function BriefPage({
   searchParams,
@@ -33,7 +34,7 @@ async function BriefPage({
     );
   }
 
-  const stageBlocks = await fetchStageBlocks(stageId);
+  // const stageBlocks = await fetchStageBlocks(stageId);
 
   return (
     <div className="space-y-6">
@@ -42,7 +43,7 @@ async function BriefPage({
         {technicalTaskStage.stage_blocks.map((block, index) => (
           <React.Fragment key={index}>
             <Dialog>
-              <DialogTrigger>
+              <DialogTrigger className="w-full">
                 <div className="flex w-full justify-between hover:underline">
                   <h5>{block.name}</h5>
                   <ChevronRight className="text-neutral-400 hover:text-neutral-900" />
@@ -53,10 +54,9 @@ async function BriefPage({
                   <DialogTitle>{block.name}</DialogTitle>
                   <DialogDescription></DialogDescription>
                 </DialogHeader>
-                <Input />
-                <Input />
-                <Input />
-                <Button>Сохранить</Button>
+                {block.name === "Информация о проживающих" && (
+                  <ResidentsBlock />
+                )}
               </DialogContent>
             </Dialog>
 

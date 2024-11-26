@@ -24,7 +24,7 @@ import { Label } from "@/components/ui/label";
 import { PhoneInput } from "@/components/ui/phone-input";
 import { createClient } from "@/utils/supabase/client";
 
-export default function CreateProjectForm({ setIsOpen }: { setIsOpen: any }) {
+export default function CreateProjectForm({ setIsOpen }: { setIsOpen?: any }) {
   const [message, setMessage] = useState("");
   const [errors, setErrors] = useState({});
   const [isClient, setIsClient] = useState(false);
