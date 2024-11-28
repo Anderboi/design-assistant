@@ -41,7 +41,6 @@ export const updateSession = async (request: NextRequest) => {
 
     // protected routes
     if (
-      request.nextUrl.pathname.startsWith("/protected") &&
       request.nextUrl.pathname.startsWith("/projects") &&
       user.error
     ) {

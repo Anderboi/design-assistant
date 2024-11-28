@@ -3,6 +3,7 @@
 import { staticStagesTemplate } from "@/lib/templates";
 import { Project, ProjectSchema } from "@/schemas/CreateProject";
 import { createClient } from "@/utils/supabase/server";
+import { redirect } from "next/navigation";
 import { v4 as uuidv4 } from "uuid";
 
 export async function createProject(project: Project) {
@@ -90,8 +91,6 @@ export async function createProject(project: Project) {
 
     if (stagesError) throw new Error("Ошибка добавления стадий");
 
-
-
     //? Шаг 4: Добавить клиента в project_members как invited client
     const { error: memberError } = await supabase
       .from("project_members")
@@ -147,12 +146,28 @@ export async function createProject(project: Project) {
   }
 }
 
+export async function getAllProjects() {
+  const supabase = await createClient();
+
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
+  if (!user) {
+    return redirect("/sign-in");
+  }
+
+  const { data: projects } = await supabase.from("projects").select();
+
+  return projects;
+}
+
 export async function getCurrentProject({ projectId }: { projectId: string }) {
   const supabase = await createClient();
 
   const { data: project, error: projectError } = await supabase
     .from("projects")
-    .select()
+    .select("*")
     .eq("id", projectId)
     .single();
 

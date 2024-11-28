@@ -66,6 +66,7 @@ function ResidentsBlock() {
     watch,
     formState: { errors },
   } = form;
+
   const {
     fields: adultFields,
     append: addAdult,
@@ -92,12 +93,12 @@ function ResidentsBlock() {
 
   return (
     <Form {...form}>
-      <form className="space-y-4">
-        <h2 className="text-xl font-bold">Информация о проживающих</h2>
-
-        {/* Взрослые */}
-        <div className="space-y-2 rounded-xl border p-4">
-          <h3 className="font-medium">Взрослые</h3>
+      {/* <form className="space-y-4"> */}
+      {/* <h2 className="text-xl font-bold">Информация о проживающих</h2> */}
+      {/* Взрослые */}
+      <section className="space-y-2">
+        <h3 className="font-medium">Взрослые</h3>
+        <article className="space-y-4 rounded-xl border p-4">
           {adultFields.map((field, index) => (
             <div
               key={field.id}
@@ -112,6 +113,8 @@ function ResidentsBlock() {
                     <FormControl>
                       <Input
                         {...field}
+                        min={80}
+                        max={280}
                         placeholder="Рост (см)"
                         type="number"
                         className="w-full"
@@ -158,14 +161,16 @@ function ResidentsBlock() {
           >
             Добавить взрослого
           </Button>
-        </div>
+        </article>
         {errors.adults && (
           <p className="text-red-600">{errors.adults.message}</p>
         )}
+      </section>
 
-        {/* Дети */}
-        <div className="space-y-2 rounded-xl border p-4">
-          <h3 className="font-medium">Дети</h3>
+      {/* Дети */}
+      <section className="space-y-2">
+        <h3 className="font-medium">Дети</h3>
+        <article className="space-y-4 rounded-xl border p-4">
           {childFields.map((field, index) => (
             <div key={field.id} className="flex w-full items-end space-x-2">
               <FormField
@@ -177,6 +182,8 @@ function ResidentsBlock() {
                     <FormControl>
                       <Input
                         {...field}
+                        min={0}
+                        max={18}
                         placeholder="Возраст"
                         type="number"
                         className="w-full"
@@ -198,89 +205,89 @@ function ResidentsBlock() {
           <Button type="button" onClick={() => addChild({ age: 0 })}>
             Добавить ребенка
           </Button>
-        </div>
+        </article>
+      </section>
 
-        {/* Увлечения */}
-        <div>
-          <FormField
-            control={control}
-            name="hobbies"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Увлечения</FormLabel>
-                <FormControl>
-                  <Input {...field} placeholder="Увлечения членов семьи" />
-                </FormControl>
-              </FormItem>
-            )}
-          />
-        </div>
-
-        {/* Ограничения по здоровью */}
-        <div>
-          <FormField
-            control={control}
-            name="healthIssues"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Ограничения по здоровью</FormLabel>
-                <FormControl>
-                  <Input {...field} placeholder="Укажите ограничения" />
-                </FormControl>
-              </FormItem>
-            )}
-          />
-        </div>
-
-        {/* Домашние животные */}
-        <div className="space-y-4 pb-2">
-          <FormField
-            control={control}
-            name="hasPets"
-            render={({ field }) => (
-              <FormItem>
-                {/* <FormLabel>Есть домашние животные?</FormLabel> */}
-                <FormControl>
-                  <div className="flex items-center gap-4">
-                    <Switch
-                      checked={field.value}
-                      onCheckedChange={field.onChange}
-                    />
-                    <span className="text-sm">Есть домашние животные?</span>
-                  </div>
-                </FormControl>
-              </FormItem>
-            )}
-          />
-
-          {watchHasPets && (
-            <div>
-              <FormField
-                control={control}
-                name="petDetails"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>
-                      Что предусмотреть для домашних животных?
-                    </FormLabel>
-                    <FormControl>
-                      <Input
-                        {...field}
-                        placeholder="Опишите животных и их потребности"
-                      />
-                    </FormControl>
-                  </FormItem>
-                )}
-              />
-            </div>
+      {/* Увлечения */}
+      <section className="space-y-2">
+        <h3 className="font-medium">Увлечения</h3>
+        <FormField
+          control={control}
+          name="hobbies"
+          render={({ field }) => (
+            <FormItem>
+              {/* <FormLabel>Увлечения</FormLabel> */}
+              <FormControl>
+                <Input {...field} placeholder="Увлечения членов семьи" />
+              </FormControl>
+            </FormItem>
           )}
-        </div>
+        />
+      </section>
 
-        {/* Кнопка отправки */}
-        <Button type="submit">
-          Сохранить
-        </Button>
-      </form>
+      {/* Ограничения по здоровью */}
+      <section className="space-y-2">
+        <h3 className="font-medium">Ограничения по здоровью</h3>
+        <FormField
+          control={control}
+          name="healthIssues"
+          render={({ field }) => (
+            <FormItem>
+              {/* <FormLabel>Ограничения по здоровью</FormLabel> */}
+              <FormControl>
+                <Input {...field} placeholder="Укажите ограничения" />
+              </FormControl>
+            </FormItem>
+          )}
+        />
+      </section>
+
+      {/* Домашние животные */}
+      <section className="space-y-4 pb-2">
+        <FormField
+          control={control}
+          name="hasPets"
+          render={({ field }) => (
+            <FormItem>
+              {/* <FormLabel>Есть домашние животные?</FormLabel> */}
+              <FormControl>
+                <div className="flex items-center gap-4">
+                  <Switch
+                    checked={field.value}
+                    onCheckedChange={field.onChange}
+                  />
+                  <span className="text-sm">Есть домашние животные?</span>
+                </div>
+              </FormControl>
+            </FormItem>
+          )}
+        />
+
+        {watchHasPets && (
+          <div>
+            <FormField
+              control={control}
+              name="petDetails"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>
+                    Что предусмотреть для домашних животных?
+                  </FormLabel>
+                  <FormControl>
+                    <Input
+                      {...field}
+                      placeholder="Опишите животных и их потребности"
+                    />
+                  </FormControl>
+                </FormItem>
+              )}
+            />
+          </div>
+        )}
+      </section>
+      {/* Кнопка отправки */}
+      <Button type="submit">Сохранить</Button>
+      {/* </form> */}
     </Form>
   );
 }

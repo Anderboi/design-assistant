@@ -183,3 +183,51 @@ const blockTemplates = {
 
   // остальные стадии...
 };
+
+interface Option {
+  value: string;
+  label: string;
+}
+
+export const roomList: Option[] = [
+  {
+    value: "Прихожая",
+    label: "Прихожая",
+  },
+  {
+    value: "Гостиная",
+    label: "Гостиная",
+  },
+  {
+    value: "Кухня",
+    label: "Кухня",
+  },
+  {
+    value: "Столовая",
+    label: "Столовая",
+  },
+  {
+    value: "Спальня",
+    label: "Спальня",
+  },
+  {
+    value: "Детская",
+    label: "Детская",
+  },
+  {
+    value: "Гардеробная",
+    label: "Гардеробная",
+  },
+  {
+    value: "Ванная комната",
+    label: "Ванная комната",
+  },
+  {
+    value: "Санузел",
+    label: "Санузел",
+  },
+  {
+    value: "Постирочная",
+    label: "Постирочная",
+  },
+];

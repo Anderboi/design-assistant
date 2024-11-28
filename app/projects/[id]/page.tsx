@@ -19,9 +19,6 @@ async function ProjectPage({
     projectId,
   });
 
-  console.log(dynamicStages);
-  
-
   if (!dynamicStages) {
     return <div>Проект не найден</div>;
   }
@@ -44,7 +41,7 @@ async function ProjectPage({
 
   return (
     <div className="flex w-full flex-col gap-2">
-      <h1 className="text-3xl font-bold">Стадии</h1>
+      <h1 className="pb-4 text-3xl font-bold">Стадии</h1>
 
       {stagesWithCompletion.map((stage, index) =>
         stage.type === "action" ? (

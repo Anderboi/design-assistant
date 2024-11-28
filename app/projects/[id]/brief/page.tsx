@@ -1,6 +1,5 @@
 import React from "react";
 import { ChevronRight } from "lucide-react";
-import { fetchStageBlocks } from "@/app/actions/actions";
 import { staticStagesTemplate } from "@/lib/templates";
 import { Separator } from "@/components/ui/separator";
 import {
@@ -11,9 +10,8 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
-import ResidentsBlock from "./_components/(blocks)/ResidentsBlock";
+import ResidentsBlock from "./(blocks)/ResidentsBlock";
+import PremisesBlock from "./(blocks)/PremisesBlock";
 
 async function BriefPage({
   searchParams,
@@ -37,39 +35,36 @@ async function BriefPage({
   // const stageBlocks = await fetchStageBlocks(stageId);
 
   return (
-    <div className="space-y-6">
-      <h1 className="text-3xl font-bold">Техническое задание</h1>
-      <div className="//bg-primary-foreground space-y-2 rounded-xl p-4 shadow-card shadow-neutral-200">
-        {technicalTaskStage.stage_blocks.map((block, index) => (
-          <React.Fragment key={index}>
-            <Dialog>
-              <DialogTrigger className="w-full">
-                <div className="flex w-full justify-between hover:underline">
-                  <h5>{block.name}</h5>
-                  <ChevronRight className="text-neutral-400 hover:text-neutral-900" />
-                </div>
-              </DialogTrigger>
-              <DialogContent className="rounded-xl sm:max-w-[425px]">
-                <DialogHeader>
-                  <DialogTitle>{block.name}</DialogTitle>
-                  <DialogDescription></DialogDescription>
-                </DialogHeader>
-                {block.name === "Информация о проживающих" && (
-                  <ResidentsBlock />
-                )}
-              </DialogContent>
-            </Dialog>
+    <>
+      {technicalTaskStage.stage_blocks.map((block, index) => (
+        <React.Fragment key={index}>
+          <Dialog>
+            <DialogTrigger className="w-full">
+              <div className="flex w-full justify-between hover:underline">
+                <h5>{block.name}</h5>
+                <ChevronRight className="text-neutral-400 hover:text-neutral-900" />
+              </div>
+            </DialogTrigger>
+            <DialogContent className=" no-scrollbar h-full max-h-[90vh] overflow-y-scroll rounded-xl sm:max-w-[460px]">
+              <DialogHeader>
+                <DialogTitle>{block.name}</DialogTitle>
+                <DialogDescription></DialogDescription>
+              </DialogHeader>
 
-            {technicalTaskStage.stage_blocks &&
-            technicalTaskStage.stage_blocks?.length - 1 > index ? (
-              <Separator />
-            ) : (
-              <></>
-            )}
-          </React.Fragment>
-        ))}
-      </div>
-    </div>
+              {block.name === "Информация о проживающих" && <ResidentsBlock />}
+              {block.name === "Перечень помещений" && <PremisesBlock />}
+            </DialogContent>
+          </Dialog>
+
+          {technicalTaskStage.stage_blocks &&
+          technicalTaskStage.stage_blocks?.length - 1 > index ? (
+            <Separator />
+          ) : (
+            <></>
+          )}
+        </React.Fragment>
+      ))}
+    </>
   );
 }
 
