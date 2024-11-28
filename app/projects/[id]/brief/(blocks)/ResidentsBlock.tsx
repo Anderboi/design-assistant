@@ -101,15 +101,12 @@ function ResidentsBlock() {
           <h3 className="font-medium">Взрослые</h3>
           <article className="space-y-4 rounded-xl border p-4">
             {adultFields.map((block, index) => (
-              <div
-                key={block.id}
-                className="grid grid-cols-5 items-end space-x-2"
-              >
+              <div key={block.id} className="flex items-end space-x-2">
                 <FormField
                   control={control}
                   name={`adults.${index}.height`}
                   render={({ field }) => (
-                    <FormItem className="col-span-2">
+                    <FormItem className="w-full">
                       <FormLabel>Рост</FormLabel>
                       <FormControl>
                         <Input
@@ -133,7 +130,7 @@ function ResidentsBlock() {
                   control={control}
                   name={`adults.${index}.gender`}
                   render={({ field }) => (
-                    <FormItem className="col-span-2">
+                    <FormItem className="w-full">
                       {/* <FormLabel>Пол</FormLabel> */}
                       <FormControl>
                         <Select onValueChange={field.onChange}>
@@ -151,7 +148,7 @@ function ResidentsBlock() {
                 />
 
                 <Button
-                  className="col-span-1"
+                  className="w-fit"
                   type="button"
                   onClick={() => removeAdult(index)}
                   variant="destructive"
@@ -162,6 +159,8 @@ function ResidentsBlock() {
             ))}
             <Button
               type="button"
+              variant="secondary"
+              className="w-full"
               onClick={() => addAdult({ height: 0, gender: "" })}
             >
               Добавить взрослого
@@ -211,7 +210,12 @@ function ResidentsBlock() {
                 </Button>
               </div>
             ))}
-            <Button type="button" onClick={() => addChild({ age: 0 })}>
+            <Button
+              className="w-full"
+              type="button"
+              variant="secondary"
+              onClick={() => addChild({ age: 0 })}
+            >
               Добавить ребенка
             </Button>
           </article>
@@ -295,7 +299,9 @@ function ResidentsBlock() {
           )}
         </section>
         {/* Кнопка отправки */}
-        <Button type="submit">Сохранить</Button>
+        <Button type="submit" className="w-full">
+          Сохранить
+        </Button>
       </form>
     </Form>
   );

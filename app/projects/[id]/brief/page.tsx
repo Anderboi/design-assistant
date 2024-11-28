@@ -6,12 +6,14 @@ import {
   Dialog,
   DialogContent,
   DialogDescription,
+  DialogFooter,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
 import ResidentsBlock from "./(blocks)/ResidentsBlock";
 import PremisesBlock from "./(blocks)/PremisesBlock";
+import { Button } from "@/components/ui/button";
 
 async function BriefPage({
   searchParams,
@@ -45,14 +47,17 @@ async function BriefPage({
                 <ChevronRight className="text-neutral-400 hover:text-neutral-900" />
               </div>
             </DialogTrigger>
-            <DialogContent className=" no-scrollbar h-full max-h-[90vh] overflow-y-scroll rounded-xl sm:max-w-[460px]">
+            <DialogContent className="h-full max-h-[90vh] overflow-clip rounded-xl no-scrollbar sm:max-w-[460px]">
               <DialogHeader>
                 <DialogTitle>{block.name}</DialogTitle>
                 <DialogDescription></DialogDescription>
               </DialogHeader>
-
-              {block.name === "Информация о проживающих" && <ResidentsBlock />}
-              {block.name === "Перечень помещений" && <PremisesBlock />}
+              <section className="h-full overflow-y-scroll no-scrollbar">
+                {block.name === "Информация о проживающих" && (
+                  <ResidentsBlock />
+                )}
+                {block.name === "Перечень помещений" && <PremisesBlock />}
+              </section>
             </DialogContent>
           </Dialog>
 

@@ -20,7 +20,6 @@ export default async function Page() {
     return (
       <div className="flex w-full flex-col gap-6">
         <h1 className="text-3xl font-bold">Проекты</h1>
-        <Link href={"/settings"}>Settings</Link>
         <section className="flex grid-cols-3 flex-col gap-2 sm:grid md:grid-cols-4 lg:grid-cols-5">
           <Link href={`projects/create`}>
             <Button className="h-full w-full sm:flex-col">
