@@ -62,6 +62,7 @@ function ResidentsBlock() {
       petDetails: "",
     },
   });
+  
   const {
     control,
     watch,

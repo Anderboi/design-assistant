@@ -231,3 +231,36 @@ export const roomList: Option[] = [
     label: "Постирочная",
   },
 ];
+export const wallMaterials: string[] = [
+  "Кирпич",
+  "Пазогребневые плиты (ПГП)",
+  "Керамзитобетонные блоки",
+  "Газобетон или пенобетон",
+  "Гипсокартон",
+];
+
+export const floorMaterials: string[] = [
+  "Инженерная доска",
+  "Паркетная доска",
+  "Ламинат",
+  "Кварцвинил",
+  "Керамогранит",
+  "Натуральный камень",
+  "Микроцемент",
+];
+
+export const ceilingMaterials: string[] = [
+  "Гипсокартон",
+  "Натяжной потолок",
+  "Без подшивки",
+];
+
+export const optionsMaker = (data: string[]) => {
+  let newOptions: Option[] = [];
+
+  data.map((item) => {
+    newOptions.push({ label: item, value: item });
+  });
+
+  return newOptions;
+};

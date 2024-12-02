@@ -3,32 +3,21 @@
 import React, { useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useFieldArray, useForm } from "react-hook-form";
-import { z } from "zod";
 import { Form, FormControl, FormField, FormItem } from "@/components/ui/form";
 import { Trash2Icon } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { roomList } from "@/lib/templates";
 import CreatableSelect from "react-select/creatable";
+import { Premises, PremisesSchema } from "@/schemas/schemas";
+import { createRooms } from "@/app/actions/actions";
 
-const PremisesSchema = z.object({
-  rooms: z
-    .array(
-      z.object({
-        name: z.string().min(1, "Необходимо укащать название"),
-      }),
-    )
-    .min(1, "Добавьте хотя бы одно помещение"),
-});
-
-type PremisesFormValues = z.infer<typeof PremisesSchema>;
-
-function PremisesBlock() {
+function PremisesBlock({ projectId }: { projectId: string }) {
   const [options, setOptions] = useState(roomList);
 
-  const form = useForm<PremisesFormValues>({
+  const form = useForm<Premises>({
     resolver: zodResolver(PremisesSchema),
     defaultValues: {
-      rooms: [{ name: "Гостиная" }],
+      rooms: [{ name: "Гостиная", order: 1, project_id: projectId }],
     },
   });
 
@@ -44,8 +33,8 @@ function PremisesBlock() {
   });
 
   //? 3. Сохранение данных формы
-  const onSubmit = (data: PremisesFormValues) => {
-    console.log(data);
+  const onSubmit = (data: Premises) => {
+    createRooms(data);
   };
 
   const handleCreateOption = (inputValue: string, index: number) => {
@@ -58,7 +47,7 @@ function PremisesBlock() {
     <Form {...form}>
       <form
         onSubmit={form.handleSubmit(onSubmit)}
-        className="relative flex flex-col justify-between"
+        className="relative flex h-full flex-col justify-between"
       >
         <section className="flex h-full flex-col justify-start gap-4 pb-4">
           {roomFields.map((room, index) => (
@@ -85,7 +74,6 @@ function PremisesBlock() {
                         placeholder="Помещение..."
                         options={options}
                         onChange={(val) => field.onChange(val?.value)}
-                        className="//h-8 //!rounded-lg"
                         classNames={{
                           control: (
                             state,
@@ -135,7 +123,13 @@ function PremisesBlock() {
           <Button
             type="button"
             variant="secondary"
-            onClick={() => append({ name: "rooms" })}
+            onClick={() =>
+              append({
+                name: "rooms",
+                order: roomFields.length + 1,
+                project_id: projectId,
+              })
+            }
           >
             Добавить помещение
           </Button>

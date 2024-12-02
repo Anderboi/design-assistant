@@ -12,3 +12,18 @@ export const ProjectSchema = z.object({
 });
 
 export type Project = z.infer<typeof ProjectSchema>;
+
+export const PremisesSchema = z.object({
+  rooms: z
+    .array(
+      z.object({
+        name: z.string().min(1, "Необходимо укащать название"),
+        order: z.coerce.number(),
+        area: z.coerce.number().optional(),
+        project_id: z.string(),
+      }),
+    )
+    .min(1, "Добавьте хотя бы одно помещение"),
+});
+
+export type Premises = z.infer<typeof PremisesSchema>;

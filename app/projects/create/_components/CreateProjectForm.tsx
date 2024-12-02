@@ -4,7 +4,7 @@ import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Form, FormProvider, useForm } from "react-hook-form";
-import { Project, ProjectSchema } from "@/schemas/CreateProject";
+import { Project, ProjectSchema } from "@/schemas/schemas";
 import { Button } from "@/components/ui/button";
 import { createProject } from "@/app/actions/actions";
 import AddressSuggest from "@/components/AddressSuggest";

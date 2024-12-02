@@ -51,11 +51,11 @@ async function ProjectPage({
         ) : (
           <Link
             key={index}
-            href={`${projectId}/${stage.href}?stageId=${stage.id}` || ""}
+            href={`${projectId}/${stage.href}?projectId=${projectId}` || ""}
             replace={false}
             className={`${stage.stage_status === "blocked" ? "cursor-not-allowed bg-secondary" : "border hover:shadow-lg"} rounded-xl p-6`}
           >
-            <div className="//shadow-md flex items-start space-x-4">
+            <div className="flex items-start space-x-4">
               <Icon
                 name={stage.icon}
                 className={` ${stage.stage_status === "blocked" && "text-neutral-400"}`}

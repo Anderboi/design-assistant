@@ -6,23 +6,22 @@ import {
   Dialog,
   DialogContent,
   DialogDescription,
-  DialogFooter,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
 import ResidentsBlock from "./(blocks)/ResidentsBlock";
 import PremisesBlock from "./(blocks)/PremisesBlock";
-import { Button } from "@/components/ui/button";
+import ConstructionBlock from "./(blocks)/ConstructionBlock";
 
 async function BriefPage({
   searchParams,
 }: {
   searchParams: {
-    stageId: string;
+    projectId: string;
   };
 }) {
-  const { stageId } = await searchParams;
+  const { projectId } = await searchParams;
 
   const technicalTaskStage = staticStagesTemplate.find(
     (stage) => stage.title === "Техническое задание",
@@ -47,16 +46,24 @@ async function BriefPage({
                 <ChevronRight className="text-neutral-400 hover:text-neutral-900" />
               </div>
             </DialogTrigger>
-            <DialogContent className="h-full max-h-[90vh] overflow-clip rounded-xl no-scrollbar sm:max-w-[460px]">
-              <DialogHeader>
+            <DialogContent className="h-full max-h-[90vh] overflow-y-scroll rounded-xl no-scrollbar sm:max-w-[460px]">
+              <DialogHeader className="h-fit">
                 <DialogTitle>{block.name}</DialogTitle>
                 <DialogDescription></DialogDescription>
               </DialogHeader>
-              <section className="h-full overflow-y-scroll no-scrollbar">
+              <section className="h-full">
                 {block.name === "Информация о проживающих" && (
                   <ResidentsBlock />
                 )}
-                {block.name === "Перечень помещений" && <PremisesBlock />}
+                {block.name === "Перечень помещений" && (
+                  <PremisesBlock projectId={projectId} />
+                )}
+                {block.name === "Информация по демонтажу" && <article />}
+                {block.name === "Информация по монтажу" && (
+                  <ConstructionBlock projectId={projectId} />
+                )}
+                {block.name === "Инженерные системы" && <article />}
+                {block.name === "Отделка и оборудование" && <article />}
               </section>
             </DialogContent>
           </Dialog>

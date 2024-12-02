@@ -1,7 +1,7 @@
 "use server";
 
 import { staticStagesTemplate } from "@/lib/templates";
-import { Project, ProjectSchema } from "@/schemas/CreateProject";
+import { Premises, Project, ProjectSchema } from "@/schemas/schemas";
 import { createClient } from "@/utils/supabase/server";
 import { redirect } from "next/navigation";
 import { v4 as uuidv4 } from "uuid";
@@ -191,6 +191,40 @@ export async function getProjectStages({ projectId }: { projectId: string }) {
   return stageData;
 }
 
+export async function createRooms(data: Premises) {
+  console.log(data.rooms);
+
+  const supabase = await createClient();
+
+  const { data: PremisesData, error: PremisesError } = await supabase
+    .from("premises")
+    .insert(data.rooms);
+
+  if (PremisesError) {
+    console.error("Error create premises:", PremisesError);
+  }
+}
+
+export async function getProjectRooms(projectId: string) {
+  const supabase = await createClient();
+
+  const { data, error } = await supabase
+    .from("premises")
+    .select("*")
+    .eq("project_id", projectId)
+    .order("order");
+
+  if (error) {
+    console.error("Error fetching stage blocks:", error);
+    return [];
+  }
+  if (!data) {
+    return [];
+  }
+
+  return data;
+}
+
 export async function fetchStageBlocks(stageId: string) {
   const supabase = await createClient();
 
@@ -210,6 +244,7 @@ export async function fetchStageBlocks(stageId: string) {
   return data;
 }
 
+//! Delete
 export async function fetchBlockFields(blockId: string) {
   const supabase = await createClient();
 
