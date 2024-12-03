@@ -24,6 +24,7 @@ const config = {
         input: "hsl(var(--input))",
         ring: "hsl(var(--ring))",
         background: "hsl(var(--background))",
+        shadow: "hsl(var(--shadow))",
         foreground: "hsl(var(--foreground))",
         primary: {
           DEFAULT: "hsl(var(--primary))",
@@ -60,7 +61,7 @@ const config = {
         sm: "calc(var(--radius) - 4px)",
       },
       boxShadow: {
-        card: "0 0px 24px -4px rgba(0, 0, 0, 0.3)",
+        card: "0 0px 24px -4px hsl(var(--shadow))",
       },
       keyframes: {
         "accordion-down": {

@@ -1,9 +1,10 @@
 import React from "react";
-import { ChevronRight } from "lucide-react";
+import { ChevronRight, X } from "lucide-react";
 import { staticStagesTemplate } from "@/lib/templates";
 import { Separator } from "@/components/ui/separator";
 import {
   Dialog,
+  DialogClose,
   DialogContent,
   DialogDescription,
   DialogHeader,
@@ -13,6 +14,7 @@ import {
 import ResidentsBlock from "./(blocks)/ResidentsBlock";
 import PremisesBlock from "./(blocks)/PremisesBlock";
 import ConstructionBlock from "./(blocks)/ConstructionBlock";
+import DemolitionBlock from "./(blocks)/DemolitionBlock";
 
 async function BriefPage({
   searchParams,
@@ -46,19 +48,23 @@ async function BriefPage({
                 <ChevronRight className="text-neutral-400 hover:text-neutral-900" />
               </div>
             </DialogTrigger>
-            <DialogContent className="h-full max-h-[90vh] overflow-y-scroll rounded-xl no-scrollbar sm:max-w-[460px]">
-              <DialogHeader className="h-fit">
+            <DialogContent className="h-[calc(100%-280px)] max-h-[90vh] overflow-y-scroll rounded-xl no-scrollbar sm:max-w-[520px]">
+              <DialogHeader className="sticky top-2 z-50 flex h-fit flex-row items-center justify-between rounded-lg bg-secondary p-4">
                 <DialogTitle>{block.name}</DialogTitle>
-                <DialogDescription></DialogDescription>
+                <DialogClose className="h-fit">
+                  <X className="h-6 w-6" />
+                </DialogClose>
               </DialogHeader>
-              <section className="h-full">
+              <section className="h-full pt-6">
                 {block.name === "Информация о проживающих" && (
                   <ResidentsBlock />
                 )}
                 {block.name === "Перечень помещений" && (
                   <PremisesBlock projectId={projectId} />
                 )}
-                {block.name === "Информация по демонтажу" && <article />}
+                {block.name === "Информация по демонтажу" && (
+                  <DemolitionBlock />
+                )}
                 {block.name === "Информация по монтажу" && (
                   <ConstructionBlock projectId={projectId} />
                 )}
