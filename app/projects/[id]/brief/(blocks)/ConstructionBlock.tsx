@@ -19,6 +19,8 @@ import {
 import { getProjectRooms } from "@/app/actions/actions";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Trash2Icon } from "lucide-react";
+import { SelectChip } from "@/components/ui/select-chip";
+import { StyledDialogFooter } from "@/components/ui/styled-dialog";
 
 const ConstructionInfoSchema = z.object({
   floor: z.array(
@@ -152,12 +154,12 @@ function ConstructionBlock({ projectId }: { projectId: string }) {
                 render={({ field }) => (
                   <FormItem>
                     <FormControl>
-                      <div className="flex flex-wrap gap-1">
+                      <div className="flex flex-wrap gap-2">
                         {loading ? (
                           <Skeleton className="h-8 w-full" />
                         ) : (
                           roomsList.map((room, index) => (
-                            <Badge
+                            <SelectChip
                               id={room.name}
                               key={index}
                               className="cursor-pointer"
@@ -177,7 +179,7 @@ function ConstructionBlock({ projectId }: { projectId: string }) {
                               }}
                             >
                               {room.name}
-                            </Badge>
+                            </SelectChip>
                           ))
                         )}
                       </div>
@@ -245,7 +247,7 @@ function ConstructionBlock({ projectId }: { projectId: string }) {
                       <FormControl>
                         <div className="flex flex-wrap gap-1">
                           {roomsList.map((room, index) => (
-                            <Badge
+                            <SelectChip
                               id={room.name}
                               key={index}
                               className="cursor-pointer"
@@ -265,7 +267,7 @@ function ConstructionBlock({ projectId }: { projectId: string }) {
                               }}
                             >
                               {room.name}
-                            </Badge>
+                            </SelectChip>
                           ))}
                         </div>
                       </FormControl>
@@ -333,7 +335,7 @@ function ConstructionBlock({ projectId }: { projectId: string }) {
                       <FormControl>
                         <div className="flex flex-wrap gap-1">
                           {roomsList.map((room, index) => (
-                            <Badge
+                            <SelectChip
                               id={room.name}
                               key={index}
                               className="cursor-pointer"
@@ -353,7 +355,7 @@ function ConstructionBlock({ projectId }: { projectId: string }) {
                               }}
                             >
                               {room.name}
-                            </Badge>
+                            </SelectChip>
                           ))}
                         </div>
                       </FormControl>
@@ -379,12 +381,11 @@ function ConstructionBlock({ projectId }: { projectId: string }) {
         </FormBlock>
 
         {/* Кнопка отправки */}
-        <Button
-          type="submit"
-          className="sticky bottom-2 w-full shadow-2xl shadow-white"
-        >
-          Сохранить
-        </Button>
+        <StyledDialogFooter>
+          <Button type="submit" className="w-full">
+            Сохранить
+          </Button>
+        </StyledDialogFooter>
       </form>
     </Form>
   );

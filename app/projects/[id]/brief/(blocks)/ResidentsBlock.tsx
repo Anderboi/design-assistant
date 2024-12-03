@@ -17,6 +17,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { StyledDialogFooter } from "@/components/ui/styled-dialog";
 import { Switch } from "@/components/ui/switch";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Trash2Icon } from "lucide-react";
@@ -62,7 +63,7 @@ function ResidentsBlock() {
       petDetails: "",
     },
   });
-  
+
   const {
     control,
     watch,
@@ -300,9 +301,11 @@ function ResidentsBlock() {
           )}
         </section>
         {/* Кнопка отправки */}
-        <Button type="submit" className="w-full">
-          Сохранить
-        </Button>
+        <StyledDialogFooter>
+          <Button type="submit" className=" w-full">
+            Сохранить
+          </Button>
+        </StyledDialogFooter>
       </form>
     </Form>
   );
