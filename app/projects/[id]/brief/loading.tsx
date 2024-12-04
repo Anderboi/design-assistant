@@ -2,6 +2,7 @@ import React from "react";
 import { ChevronRight } from "lucide-react";
 import { staticStagesTemplate } from "@/lib/templates";
 import { Separator } from "@/components/ui/separator";
+import { Skeleton } from "@/components/ui/skeleton";
 
 function LoadingPage() {
   return (
@@ -11,7 +12,8 @@ function LoadingPage() {
         {staticStagesTemplate.map((item, index) => (
           <React.Fragment key={index}>
             <div className="flex w-full justify-between">
-              <h5>{item.title}</h5>
+              {/* <h5>{item.title}</h5> */}
+              <Skeleton className="h-6 w-full" />
               <ChevronRight className="text-neutral-400" />
             </div>
             {index < 7 && <Separator />}

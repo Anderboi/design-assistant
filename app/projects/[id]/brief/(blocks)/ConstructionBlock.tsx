@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { Form, FormControl, FormField, FormItem } from "@/components/ui/form";
 import { useFieldArray, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -13,8 +13,6 @@ import {
   optionsMaker,
   wallMaterials,
 } from "@/lib/templates";
-import { getProjectRooms } from "@/app/actions/actions";
-import { Skeleton } from "@/components/ui/skeleton";
 import { Trash2Icon } from "lucide-react";
 import { SelectChip } from "@/components/ui/select-chip";
 import { StyledDialogFooter } from "@/components/ui/styled-dialog";
@@ -24,21 +22,8 @@ import {
 } from "@/schemas/schemas";
 import { Premise } from "@/types/types";
 
-function ConstructionBlock({ projectId }: { projectId: string }) {
-  const [roomsList, setRoomsList] = useState<Premise[]>([]);
-  const [loading, setLoading] = useState(false);
+function ConstructionBlock({ roomList }: { roomList: Premise[] }) {
 
-  useEffect(() => {
-    setLoading(true);
-    async function loadRooms() {
-      const fetchedRooms = await getProjectRooms(projectId);
-      setRoomsList(fetchedRooms);
-      setLoading(false);
-    }
-    loadRooms();
-  }, [projectId]);
-
-  //TODO: fix useEffect on modal open
   //TODO: if 1 material - auto all rooms selected
   //TODO: Badge - all rooms select
 
@@ -128,37 +113,29 @@ function ConstructionBlock({ projectId }: { projectId: string }) {
                   <FormItem>
                     <FormControl>
                       <div className="flex flex-wrap gap-2">
-                        {loading ? (
-                          <div className="grid w-full grid-cols-3 gap-2">
-                            <Skeleton className="h-[38px] rounded-full" />
-                            <Skeleton className="h-[38px] rounded-full" />
-                            <Skeleton className="h-[38px] rounded-full" />
-                          </div>
-                        ) : (
-                          roomsList.map((room, index) => (
-                            <SelectChip
-                              id={room.id}
-                              key={index}
-                              className="cursor-pointer"
-                              variant={
+                        {roomList.map((room, index) => (
+                          <SelectChip
+                            id={room.id}
+                            key={index}
+                            className="cursor-pointer"
+                            variant={
+                              field.value?.includes(room.id)
+                                ? "default"
+                                : "outline"
+                            }
+                            onClick={() => {
+                              field.onChange(
                                 field.value?.includes(room.id)
-                                  ? "default"
-                                  : "outline"
-                              }
-                              onClick={() => {
-                                field.onChange(
-                                  field.value?.includes(room.id)
-                                    ? field.value.filter(
-                                        (v: string) => v !== room.id,
-                                      )
-                                    : [...(field.value || []), room.id],
-                                );
-                              }}
-                            >
-                              {`${room.order}. ${room.name}`}
-                            </SelectChip>
-                          ))
-                        )}
+                                  ? field.value.filter(
+                                      (v: string) => v !== room.id,
+                                    )
+                                  : [...(field.value || []), room.id],
+                              );
+                            }}
+                          >
+                            {`${room.order}. ${room.name}`}
+                          </SelectChip>
+                        ))}
                       </div>
                     </FormControl>
                   </FormItem>
@@ -223,37 +200,29 @@ function ConstructionBlock({ projectId }: { projectId: string }) {
                     <FormItem>
                       <FormControl>
                         <div className="flex flex-wrap gap-1">
-                          {loading ? (
-                            <div className="grid w-full grid-cols-3 gap-2">
-                              <Skeleton className="h-[38px] rounded-full" />
-                              <Skeleton className="h-[38px] rounded-full" />
-                              <Skeleton className="h-[38px] rounded-full" />
-                            </div>
-                          ) : (
-                            roomsList.map((room, index) => (
-                              <SelectChip
-                                id={room.id}
-                                key={index}
-                                className="cursor-pointer"
-                                variant={
+                          {roomList.map((room, index) => (
+                            <SelectChip
+                              id={room.id}
+                              key={index}
+                              className="cursor-pointer"
+                              variant={
+                                field.value?.includes(room.id)
+                                  ? "default"
+                                  : "outline"
+                              }
+                              onClick={() => {
+                                field.onChange(
                                   field.value?.includes(room.id)
-                                    ? "default"
-                                    : "outline"
-                                }
-                                onClick={() => {
-                                  field.onChange(
-                                    field.value?.includes(room.id)
-                                      ? field.value.filter(
-                                          (v: string) => v !== room.id,
-                                        )
-                                      : [...(field.value || []), room.id],
-                                  );
-                                }}
-                              >
-                                {`${room.order}. ${room.name}`}
-                              </SelectChip>
-                            ))
-                          )}
+                                    ? field.value.filter(
+                                        (v: string) => v !== room.id,
+                                      )
+                                    : [...(field.value || []), room.id],
+                                );
+                              }}
+                            >
+                              {`${room.order}. ${room.name}`}
+                            </SelectChip>
+                          ))}
                         </div>
                       </FormControl>
                     </FormItem>
@@ -319,37 +288,29 @@ function ConstructionBlock({ projectId }: { projectId: string }) {
                     <FormItem>
                       <FormControl>
                         <div className="flex flex-wrap gap-1">
-                          {loading ? (
-                            <div className="grid w-full grid-cols-3 gap-2">
-                              <Skeleton className="h-[38px] rounded-full" />
-                              <Skeleton className="h-[38px] rounded-full" />
-                              <Skeleton className="h-[38px] rounded-full" />
-                            </div>
-                          ) : (
-                            roomsList.map((room, index) => (
-                              <SelectChip
-                                id={room.id}
-                                key={index}
-                                className="cursor-pointer"
-                                variant={
+                          {roomList.map((room, index) => (
+                            <SelectChip
+                              id={room.id}
+                              key={index}
+                              className="cursor-pointer"
+                              variant={
+                                field.value?.includes(room.id)
+                                  ? "default"
+                                  : "outline"
+                              }
+                              onClick={() => {
+                                field.onChange(
                                   field.value?.includes(room.id)
-                                    ? "default"
-                                    : "outline"
-                                }
-                                onClick={() => {
-                                  field.onChange(
-                                    field.value?.includes(room.id)
-                                      ? field.value.filter(
-                                          (v: string) => v !== room.id,
-                                        )
-                                      : [...(field.value || []), room.id],
-                                  );
-                                }}
-                              >
-                                {`${room.order}. ${room.name}`}
-                              </SelectChip>
-                            ))
-                          )}
+                                    ? field.value.filter(
+                                        (v: string) => v !== room.id,
+                                      )
+                                    : [...(field.value || []), room.id],
+                                );
+                              }}
+                            >
+                              {`${room.order}. ${room.name}`}
+                            </SelectChip>
+                          ))}
                         </div>
                       </FormControl>
                     </FormItem>

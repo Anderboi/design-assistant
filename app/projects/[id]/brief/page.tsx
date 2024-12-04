@@ -1,14 +1,9 @@
 import React from "react";
-import { ChevronRight, X } from "lucide-react";
+import { ChevronRight} from "lucide-react";
 import { staticStagesTemplate } from "@/lib/templates";
 import { Separator } from "@/components/ui/separator";
 import {
   Dialog,
-  DialogClose,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
 import ResidentsBlock from "./(blocks)/ResidentsBlock";
@@ -60,7 +55,7 @@ async function BriefPage({
               )}
               {block.name === "Информация по демонтажу" && <DemolitionBlock />}
               {block.name === "Информация по монтажу" && (
-                <ConstructionBlock projectId={projectId} />
+                <ConstructionBlock roomList={roomList} />
               )}
               {block.name === "Инженерные системы" && (
                 <EngeneeringSystemsBlock roomList={roomList} />
