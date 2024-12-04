@@ -66,3 +66,56 @@ export const DemolitionSchema = z.object({
   furnitureToDemolish: z.string().optional(),
 });
 export type DemolitionType = z.infer<typeof DemolitionSchema>;
+
+export const EngineeringSystemsSchema = z.object({
+  heatingSystem: z
+    .array(
+      z.object({
+        id: z.coerce.number(),
+        system: z.string(),
+        rooms: z.array(z.string()),
+      }),
+    )
+    .optional(),
+  // warmFloor: z.boolean().optional(),
+  warmFloorRooms: z
+    .array(
+      z.object({
+        id: z.coerce.number(),
+        system: z.string(),
+        rooms: z.array(z.string()),
+      }),
+    )
+    .optional(),
+
+  conditioningSystem: z
+    .array(
+      z.object({
+        id: z.coerce.number(),
+        system: z.string(),
+        rooms: z.array(z.string()),
+      }),
+    )
+    .optional(),
+
+  purificationSystem: z
+    .array(
+      z.object({
+        id: z.coerce.number(),
+        system: z.string(),
+        rooms: z.array(z.string()),
+      }),
+    )
+    .optional(),
+
+  electricSystem: z
+    .array(
+      z.object({
+        id: z.coerce.number(),
+        system: z.string(),
+        rooms: z.array(z.string()),
+      }),
+    )
+    .optional(),
+});
+export type EngineeringSystemsType = z.infer<typeof EngineeringSystemsSchema>;

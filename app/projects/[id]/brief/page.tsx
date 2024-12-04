@@ -16,6 +16,8 @@ import PremisesBlock from "./(blocks)/PremisesBlock";
 import ConstructionBlock from "./(blocks)/ConstructionBlock";
 import DemolitionBlock from "./(blocks)/DemolitionBlock";
 import { StyledDialog } from "@/components/ui/styled-dialog";
+import EngeneeringSystemsBlock from "./(blocks)/EngeneeringSystemsBlock";
+import { getProjectRooms } from "@/app/actions/actions";
 
 async function BriefPage({
   searchParams,
@@ -35,6 +37,8 @@ async function BriefPage({
       <div>Стадия "Техническое задание" не найдена или не имеет блоков</div>
     );
   }
+
+  const roomList = await getProjectRooms(projectId);
 
   // const stageBlocks = await fetchStageBlocks(stageId);
 
@@ -58,7 +62,9 @@ async function BriefPage({
               {block.name === "Информация по монтажу" && (
                 <ConstructionBlock projectId={projectId} />
               )}
-              {block.name === "Инженерные системы" && <article />}
+              {block.name === "Инженерные системы" && (
+                <EngeneeringSystemsBlock roomList={roomList} />
+              )}
               {block.name === "Отделка и оборудование" && <article />}
             </StyledDialog>
           </Dialog>
