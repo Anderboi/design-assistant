@@ -9,6 +9,7 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
+import FormBlock from "@/components/ui/FormBlock";
 import { Input } from "@/components/ui/input";
 import {
   Select,
@@ -19,6 +20,7 @@ import {
 } from "@/components/ui/select";
 import { StyledDialogFooter } from "@/components/ui/styled-dialog";
 import { Switch } from "@/components/ui/switch";
+import { Textarea } from "@/components/ui/textarea";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Trash2Icon } from "lucide-react";
 import React from "react";
@@ -99,9 +101,8 @@ function ResidentsBlock() {
       <form className="space-y-4" onSubmit={form.handleSubmit(onSubmit)}>
         {/* <h2 className="text-xl font-bold">Информация о проживающих</h2> */}
         {/* Взрослые */}
-        <section className="space-y-2">
-          <h3 className="font-medium">Взрослые</h3>
-          <article className="space-y-4 rounded-xl border p-4">
+        <FormBlock title="Взрослые">
+          <>
             {adultFields.map((block, index) => (
               <div key={block.id} className="flex items-end space-x-2">
                 <FormField
@@ -133,7 +134,7 @@ function ResidentsBlock() {
                   name={`adults.${index}.gender`}
                   render={({ field }) => (
                     <FormItem className="w-full">
-                      {/* <FormLabel>Пол</FormLabel> */}
+                      <FormLabel>Пол</FormLabel>
                       <FormControl>
                         <Select onValueChange={field.onChange}>
                           <SelectTrigger className="w-full">
@@ -167,65 +168,62 @@ function ResidentsBlock() {
             >
               Добавить взрослого
             </Button>
-          </article>
-          {errors.adults && (
-            <p className="text-red-600">{errors.adults.message}</p>
-          )}
-        </section>
+
+            {errors.adults && (
+              <p className="text-red-600">{errors.adults.message}</p>
+            )}
+          </>
+        </FormBlock>
 
         {/* Дети */}
-        <section className="space-y-2">
-          <h3 className="font-medium">Дети</h3>
-          <article className="space-y-4 rounded-xl border p-4">
-            {childFields.map((field, index) => (
-              <div key={field.id} className="flex w-full items-end space-x-2">
-                <FormField
-                  control={control}
-                  name={`children.${index}.age`}
-                  render={({ field }) => (
-                    <FormItem className="w-full">
-                      <FormLabel>Возраст</FormLabel>
-                      <FormControl>
-                        <Input
-                          {...field}
-                          min={0}
-                          max={18}
-                          placeholder="Возраст"
-                          type="number"
-                          className="w-full"
-                          onChange={(event) =>
-                            field.onChange(+event.target.value)
-                          }
-                          onFocus={(e) => e.target.select()}
-                        />
-                      </FormControl>
-                    </FormItem>
-                  )}
-                />
+        <FormBlock title="Дети">
+          {childFields.map((field, index) => (
+            <div key={field.id} className="flex w-full items-end space-x-2">
+              <FormField
+                control={control}
+                name={`children.${index}.age`}
+                render={({ field }) => (
+                  <FormItem className="w-full">
+                    <FormLabel>Возраст</FormLabel>
+                    <FormControl>
+                      <Input
+                        {...field}
+                        min={0}
+                        max={18}
+                        placeholder="Возраст"
+                        type="number"
+                        className="w-full"
+                        onChange={(event) =>
+                          field.onChange(+event.target.value)
+                        }
+                        onFocus={(e) => e.target.select()}
+                      />
+                    </FormControl>
+                  </FormItem>
+                )}
+              />
 
-                <Button
-                  type="button"
-                  onClick={() => removeChild(index)}
-                  variant="destructive"
-                >
-                  <Trash2Icon size={20} />
-                </Button>
-              </div>
-            ))}
-            <Button
-              className="w-full"
-              type="button"
-              variant="secondary"
-              onClick={() => addChild({ age: 0 })}
-            >
-              Добавить ребенка
-            </Button>
-          </article>
-        </section>
+              <Button
+                type="button"
+                onClick={() => removeChild(index)}
+                variant="destructive"
+              >
+                <Trash2Icon size={20} />
+              </Button>
+            </div>
+          ))}
+          <Button
+            className="w-full"
+            type="button"
+            variant="secondary"
+            onClick={() => addChild({ age: 0 })}
+          >
+            Добавить ребенка
+          </Button>
+        </FormBlock>
 
         {/* Увлечения */}
-        <section className="space-y-2">
-          <h3 className="font-medium">Увлечения</h3>
+        <FormBlock title="Увлечения">
           <FormField
             control={control}
             name="hobbies"
@@ -233,16 +231,18 @@ function ResidentsBlock() {
               <FormItem>
                 {/* <FormLabel>Увлечения</FormLabel> */}
                 <FormControl>
-                  <Input {...field} placeholder="Увлечения членов семьи" />
+                  <Textarea
+                    {...field}
+                    placeholder="Увлечения членов семьи, и что необходимо предусмотреть для них в новом интерьере?"
+                  />
                 </FormControl>
               </FormItem>
             )}
           />
-        </section>
+        </FormBlock>
 
         {/* Ограничения по здоровью */}
-        <section className="space-y-2">
-          <h3 className="font-medium">Ограничения по здоровью</h3>
+        <FormBlock title="Ограничения по здоровью">
           <FormField
             control={control}
             name="healthIssues"
@@ -250,12 +250,15 @@ function ResidentsBlock() {
               <FormItem>
                 {/* <FormLabel>Ограничения по здоровью</FormLabel> */}
                 <FormControl>
-                  <Input {...field} placeholder="Укажите ограничения" />
+                  <Textarea
+                    {...field}
+                    placeholder="Укажите ограничения по здоровью. Что может помешать вам жить в новом интерьере?"
+                  />
                 </FormControl>
               </FormItem>
             )}
           />
-        </section>
+        </FormBlock>
 
         {/* Домашние животные */}
         <section className="space-y-4 pb-2">
@@ -279,30 +282,27 @@ function ResidentsBlock() {
           />
 
           {watchHasPets && (
-            <div>
+            <FormBlock title="Что предусмотреть для домашних животных?">
               <FormField
                 control={control}
                 name="petDetails"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>
-                      Что предусмотреть для домашних животных?
-                    </FormLabel>
                     <FormControl>
-                      <Input
+                      <Textarea
                         {...field}
-                        placeholder="Опишите животных и их потребности"
+                        placeholder="Опишите домашних животных и что необходимо предусмотреть для них."
                       />
                     </FormControl>
                   </FormItem>
                 )}
               />
-            </div>
+            </FormBlock>
           )}
         </section>
         {/* Кнопка отправки */}
         <StyledDialogFooter>
-          <Button type="submit" className=" w-full">
+          <Button type="submit" className="w-full">
             Сохранить
           </Button>
         </StyledDialogFooter>

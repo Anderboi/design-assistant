@@ -51,7 +51,8 @@ function PremisesBlock({ projectId }: { projectId: string }) {
       >
         <section className="flex h-full flex-col justify-start gap-4 pb-4">
           {roomFields.map((room, index) => (
-            <article key={index} className="flex w-full gap-2">
+            <article key={index} className="flex w-full items-center gap-2">
+              <span className="px-4">{room.order}</span>
               <FormField
                 control={form.control}
                 name={`rooms.${index}.name`}
@@ -110,7 +111,6 @@ function PremisesBlock({ projectId }: { projectId: string }) {
                           menuPortal: (state) =>
                             "text-base dark:text-neutral-50 dark:!bg-neutral-800",
                         }}
-                     
                         createOptionPosition="last"
                         onCreateOption={(inputValue) =>
                           handleCreateOption(inputValue, index)
