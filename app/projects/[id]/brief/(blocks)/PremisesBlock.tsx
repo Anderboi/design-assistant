@@ -17,7 +17,7 @@ function PremisesBlock({ projectId }: { projectId: string }) {
   const form = useForm<Premises>({
     resolver: zodResolver(PremisesSchema),
     defaultValues: {
-      rooms: [{ name: "Гостиная", order: 1, project_id: projectId }],
+      rooms: [{ name: "", order: 1, project_id: projectId }],
     },
   });
 
@@ -56,15 +56,24 @@ function PremisesBlock({ projectId }: { projectId: string }) {
                 control={form.control}
                 name={`rooms.${index}.name`}
                 render={({ field }) => (
-                  <FormItem className="w-full">
+                  <FormItem className="relative w-full">
                     <FormControl>
                       <CreatableSelect
                         blurInputOnSelect
-                        captureMenuScroll
-                        //closeMenuOnSelect
+                        // captureMenuScroll
+                        closeMenuOnSelect
+                        // menuPortalTarget={document.body}
+                        // menuPosition="fixed"
+                        // menuShouldScrollIntoView={false}
                         isClearable
+                        // styles={{
+                        //   control: (base) => ({ ...base, zIndex: 90 }),
+                        //   menuPortal: (base) => ({ ...base, zIndex: 100 }),
+
+                        //   menu: (base) => ({ ...base, zIndex: 9999 }),
+                        // }}
                         minMenuHeight={800}
-                        menuPlacement={"auto"}
+                        menuPlacement="auto"
                         formatCreateLabel={(value) => `Создать '${value}'`}
                         value={
                           options.find(
@@ -77,30 +86,31 @@ function PremisesBlock({ projectId }: { projectId: string }) {
                         classNames={{
                           control: (
                             state,
-                          ) => `h-8 !rounded-md border-red-300 !border-neutral-200 !focused:border-teal-500
-                                                  !focused:ring-teal-500 
-                                                  dark:bg-neutral-900 
-                                                  dark:!text-neutral-50 dark:!border-neutral-600`,
+                          ) => `h-8 !rounded-md border-neutral-300 !border-neutral-200 !focused:border-neutral-500
+                                !focused:ring-neutral-500 
+                                dark:bg-neutral-900 
+                                dark:!text-neutral-50 dark:!border-neutral-600`,
 
                           input: (state) =>
-                            "text-base sm:text-sm dark:text-neutral-200",
+                            "text-base sm:text-base dark:text-neutral-200",
                           valueContainer: (state) => "",
                           singleValue: (state) =>
-                            "text-sm dark:text-neutral-50",
+                            "text-base dark:text-neutral-50",
                           placeholder: (state) =>
-                            "text-sm dark:text-neutral-500",
+                            "text-base dark:text-neutral-500",
                           menu: (state) =>
-                            "text-sm dark:text-neutral-50 dark:!bg-neutral-800",
+                            "text-base !rounded-lg overflow-clip dark:text-neutral-50 dark:!bg-neutral-800",
                           option: (state) =>
                             state.isFocused
-                              ? "text-sm dark:text-neutral-50 !bg-teal-200 dark:!bg-neutral-600 !text-black"
+                              ? "text-base z-50 dark:text-neutral-50 !bg-neutral-200 dark:!bg-neutral-600 !text-black"
                               : state.isSelected
-                                ? "!bg-teal-500 hover:!bg-teal-600"
+                                ? "!bg-neutral-500 hover:!bg-neutral-600"
                                 : "dark:!bg-neutral-800",
 
                           menuPortal: (state) =>
-                            "text-sm dark:text-neutral-50 dark:!bg-neutral-800",
+                            "text-base dark:text-neutral-50 dark:!bg-neutral-800",
                         }}
+                     
                         createOptionPosition="last"
                         onCreateOption={(inputValue) =>
                           handleCreateOption(inputValue, index)
@@ -135,12 +145,11 @@ function PremisesBlock({ projectId }: { projectId: string }) {
           </Button>
         </section>
         {/* Кнопка добавления помещения */}
-        <Button
-          className="sticky bottom-2 w-full shadow-2xl shadow-white"
-          type="submit"
-        >
-          Сохранить
-        </Button>
+        <div className="sticky bottom-0 w-full rounded-lg bg-white p-4 shadow-card shadow-neutral-300">
+          <Button type="submit" className="//shadow-white w-full">
+            Сохранить
+          </Button>
+        </div>
       </form>
     </Form>
   );

@@ -31,15 +31,17 @@ const StyledSelect: React.FC<StyledSelectProps> = ({
       placeholder="Выбрать..."
       onChange={(selectedOption) => onChange?.(selectedOption?.value || null)}
       onCreateOption={onCreateOption}
+      styles={{ menuPortal: (base) => ({ ...base, zIndex: 9999 }) }}
       classNames={{
         control: (state) =>
-          `h-8 !rounded-md border-red-300 !border-neutral-200 !focused:border-neutral-500
+          `h-8 !rounded-md  border-red-300 !border-neutral-200 !focused:border-neutral-500
            !focused:ring-neutral-500 dark:bg-neutral-900 
            dark:!text-neutral-50 dark:!border-neutral-600`,
         input: () => "text-base sm:text-base dark:text-neutral-200",
         singleValue: () => " dark:text-neutral-50",
         placeholder: () => " dark:text-neutral-500",
         menu: () => " dark:text-neutral-50 dark:!bg-neutral-800",
+
         option: (state) =>
           state.isFocused
             ? " dark:text-neutral-50 !bg-neutral-200 dark:!bg-neutral-600 !text-black"
