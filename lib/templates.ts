@@ -184,10 +184,11 @@ const blockTemplates = {
   // остальные стадии...
 };
 
-interface Option {
+export type Option = {
   value: string;
   label: string;
-}
+  group?: string;
+};
 
 export const roomList: Option[] = [
   {
@@ -299,3 +300,38 @@ export const optionsMaker = (data: string[]) => {
 
   return newOptions;
 };
+
+export const equipmentOptions: Option[] = [
+  { value: "Холодильник", label: "Холодильник", group: "Кухня" },
+  { value: "Духовой шкаф", label: "Духовой шкаф", group: "Кухня" },
+  { value: "Варочная панель", label: "Варочная панель", group: "Кухня" },
+  {
+    value: "Посудомоечная машина",
+    label: "Посудомоечная машина",
+    group: "Кухня",
+  },
+  { value: "Вытяжка", label: "Вытяжка", group: "Кухня" },
+  { value: "Винный шкаф", label: "Винный шкаф", group: "Кухня" },
+  { value: "Морозильник", label: "Морозильник", group: "Кухня" },
+  { value: "Микроволновая печь", label: "Микроволновая печь", group: "Кухня" },
+  {
+    value: "Измельчитель отходов",
+    label: "Измельчитель отходов",
+    group: "Кухня",
+  },
+  { value: "Унитаз", label: "Унитаз", group: "Сантехника" },
+  { value: "Биде", label: "Биде", group: "Сантехника" },
+  {
+    value: "Гигиенический душ",
+    label: "Гигиенический душ",
+    group: "Сантехника",
+  },
+  { value: "Душ", label: "Душ", group: "Сантехника" },
+  { value: "Ванна", label: "Ванна", group: "Сантехника" },
+  { value: "Умывальник", label: "Умывальник", group: "Сантехника" },
+  {
+    value: "Полотенцесушитель",
+    label: "Полотенцесушитель",
+    group: "Сантехника",
+  },
+];

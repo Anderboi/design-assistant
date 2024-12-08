@@ -12,18 +12,38 @@ export const ProjectSchema = z.object({
 });
 export type Project = z.infer<typeof ProjectSchema>;
 
-export const PremisesSchema = z.object({
-  rooms: z
-    .array(
-      z.object({
-        name: z.string().min(1, "Необходимо укащать название"),
-        order: z.coerce.number(),
-        area: z.coerce.number().optional(),
-        project_id: z.string(),
-      }),
-    )
-    .min(1, "Добавьте хотя бы одно помещение"),
+export const equipmentSchema = z.object({
+  id: z.string(),
+  name: z.string(),
+  url: z.string().url("Введите корректный URL").optional(),
+  price: z
+    .number()
+    .nonnegative("Стоимость должна быть положительным числом")
+    .optional(),
+  manufacturer: z.string().optional(),
+  description: z.string().optional(),
+  quantity: z
+    .number()
+    .positive("Количество должно быть больше нуля")
+    .optional(),
+  room_id: z.string().uuid(),
 });
+export type Equipment = z.infer<typeof equipmentSchema>;
+
+export const PremiseSchema = z.object({
+  id: z.string(),
+  name: z.string().min(1, "Необходимо укащать название"),
+  order: z.coerce.number(),
+  area: z.coerce.number().optional(),
+  project_id: z.string(),
+  equipment: z.array(equipmentSchema).optional(),
+});
+export type Premise = z.infer<typeof PremiseSchema>;
+
+export const PremisesSchema = z.object({
+  rooms: z.array(PremiseSchema).min(1, "Добавьте хотя бы одно помещение"),
+});
+
 export type Premises = z.infer<typeof PremisesSchema>;
 
 export const ConstructionInfoSchema = z.object({
