@@ -19,6 +19,7 @@ import { StyledDialogFooter } from "@/components/ui/styled-dialog";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Trash2Icon } from "lucide-react";
 import { v4 as uuidv4 } from "uuid";
+import CreatableSelect from "react-select/creatable";
 
 function EquipmentBlock({ roomList }: { roomList: Premise[] }) {
   type FormValues = {
@@ -33,8 +34,8 @@ function EquipmentBlock({ roomList }: { roomList: Premise[] }) {
     defaultValues: {
       rooms: roomList.map((room) => ({
         room_id: room.id,
-        equipment: [],
-        furniture: [],
+        equipment: [{ name: "", id: uuidv4(), room_id: room.id }],
+        furniture: [{ name: "", id: uuidv4(), room_id: room.id }],
       })),
     },
   });
@@ -42,7 +43,12 @@ function EquipmentBlock({ roomList }: { roomList: Premise[] }) {
   const onInvalid = (errors: any) => console.error(errors);
 
   function onSubmit(values: FormValues) {
-    console.log(values);
+    const trimmedRooms = values.rooms.map((room) => ({
+      room_id: room.room_id,
+      equipment: room.equipment.filter((item) => item.name !== ""),
+      furniture: room.furniture.filter((item) => item.name !== ""),
+    }));
+    console.log(trimmedRooms);
   }
 
   return (
@@ -107,7 +113,14 @@ function EquipmentBlock({ roomList }: { roomList: Premise[] }) {
                                             option.value === field.value,
                                         ) || null
                                       }
-                                      onChange={(val) => field.onChange(val)}
+                                      onChange={(val) => {
+                                        field.onChange(val);
+                                        appendFurniture({
+                                          name: "",
+                                          room_id: room.id,
+                                          id: uuidv4(),
+                                        });
+                                      }}
                                     />
                                   </FormControl>
                                 </FormItem>
@@ -151,6 +164,20 @@ function EquipmentBlock({ roomList }: { roomList: Premise[] }) {
                               render={({ field }) => (
                                 <FormItem className="w-full">
                                   <FormControl>
+                                    {/* <CreatableSelect
+                                      isMulti
+                                      isClearable
+                                      options={equipmentOptions}
+                                      {...field}
+                                      createOptionPosition="first"
+                                      value={
+                                        equipmentOptions.find(
+                                          (option) =>
+                                            option.value === field.value,
+                                        ) || null
+                                      }
+                                      onChange={(val) => field.onChange(val)}
+                                    /> */}
                                     <StyledSelect
                                       options={equipmentOptions}
                                       formatGroupLabel={(option) =>
@@ -162,7 +189,14 @@ function EquipmentBlock({ roomList }: { roomList: Premise[] }) {
                                             option.value === field.value,
                                         ) || null
                                       }
-                                      onChange={(val) => field.onChange(val)}
+                                      onChange={(val) => {
+                                        field.onChange(val);
+                                        appendEquipment({
+                                          name: "",
+                                          room_id: room.id,
+                                          id: uuidv4(),
+                                        });
+                                      }}
                                     />
                                   </FormControl>
                                 </FormItem>
