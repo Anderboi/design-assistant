@@ -1,4 +1,5 @@
 import React from "react";
+import BlockHeaderWithNav from "./_components/BlockHeaderWithNav";
 
 function BriefPageLayout({
   children,
@@ -6,9 +7,9 @@ function BriefPageLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <div className="space-y-2">
-      <h1 className="pb-4 text-3xl font-bold">Техническое задание</h1>
-      <div className="space-y-2 rounded-xl border-border p-4 shadow-card shadow-neutral-200 dark:border dark:shadow-none">
+    <div>
+      <BlockHeaderWithNav title="Техническое задание" />
+      <div className="space-y-2 rounded-xl border-border bg-background p-4 dark:border dark:shadow-none">
         {children}
       </div>
     </div>

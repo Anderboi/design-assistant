@@ -1,11 +1,8 @@
 import React from "react";
-import { ChevronRight} from "lucide-react";
+import { ChevronRight } from "lucide-react";
 import { staticStagesTemplate } from "@/lib/templates";
 import { Separator } from "@/components/ui/separator";
-import {
-  Dialog,
-  DialogTrigger,
-} from "@/components/ui/dialog";
+import { Dialog, DialogTrigger } from "@/components/ui/dialog";
 import ResidentsBlock from "./(blocks)/ResidentsBlock";
 import PremisesBlock from "./(blocks)/PremisesBlock";
 import ConstructionBlock from "./(blocks)/ConstructionBlock";
@@ -13,6 +10,7 @@ import DemolitionBlock from "./(blocks)/DemolitionBlock";
 import { StyledDialog } from "@/components/ui/styled-dialog";
 import EngeneeringSystemsBlock from "./(blocks)/EngeneeringSystemsBlock";
 import { getProjectRooms } from "@/app/actions/actions";
+import EquipmentBlock from "./(blocks)/EquipmentBlock";
 
 async function BriefPage({
   searchParams,
@@ -45,13 +43,15 @@ async function BriefPage({
             <DialogTrigger className="w-full">
               <div className="flex w-full justify-between hover:underline">
                 <h5>{block.name}</h5>
-                <ChevronRight className="text-neutral-400 hover:text-neutral-900" />
+                <div>
+                  <ChevronRight className="text-neutral-400 hover:text-neutral-900" />
+                </div>
               </div>
             </DialogTrigger>
             <StyledDialog title={block.name}>
               {block.name === "Информация о проживающих" && <ResidentsBlock />}
               {block.name === "Перечень помещений" && (
-                <PremisesBlock projectId={projectId} />
+                <PremisesBlock projectId={projectId} roomsList={roomList} />
               )}
               {block.name === "Информация по демонтажу" && <DemolitionBlock />}
               {block.name === "Информация по монтажу" && (
@@ -60,7 +60,9 @@ async function BriefPage({
               {block.name === "Инженерные системы" && (
                 <EngeneeringSystemsBlock roomList={roomList} />
               )}
-              {block.name === "Отделка и оборудование" && <article />}
+              {block.name === "Отделка и оборудование" && (
+                <EquipmentBlock roomList={roomList} />
+              )}
             </StyledDialog>
           </Dialog>
 

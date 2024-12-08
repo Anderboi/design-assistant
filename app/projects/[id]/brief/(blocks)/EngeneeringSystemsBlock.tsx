@@ -79,7 +79,7 @@ function EngeneeringSystemsBlock({ roomList }: { roomList: Premise[] }) {
 
   return (
     <Form {...form}>
-      <form className="space-y-6" onSubmit={form.handleSubmit(onSubmit)}>
+      <form className="space-y-4" onSubmit={form.handleSubmit(onSubmit)}>
         {/* //? Система отопления */}
         <FormBlock title="Система отопления">
           {heatingSystemFields.map((_, index) => (

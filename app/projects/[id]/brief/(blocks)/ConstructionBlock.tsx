@@ -23,7 +23,6 @@ import {
 import { Premise } from "@/types/types";
 
 function ConstructionBlock({ roomList }: { roomList: Premise[] }) {
-
   //TODO: if 1 material - auto all rooms selected
   //TODO: Badge - all rooms select
 
@@ -71,7 +70,7 @@ function ConstructionBlock({ roomList }: { roomList: Premise[] }) {
 
   return (
     <Form {...form}>
-      <form className="space-y-6" onSubmit={form.handleSubmit(onSubmit)}>
+      <form className="space-y-4" onSubmit={form.handleSubmit(onSubmit)}>
         {/* Стены */}
         <FormBlock title="Стены">
           {wallFields.map((_, index) => (

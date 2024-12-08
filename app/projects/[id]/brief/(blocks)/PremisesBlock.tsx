@@ -8,19 +8,29 @@ import { Trash2Icon } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { roomList } from "@/lib/templates";
 import CreatableSelect from "react-select/creatable";
-import { Premises, PremisesSchema } from "@/schemas/schemas";
-import { createRooms } from "@/app/actions/actions";
+import { Premise, Premises, PremisesSchema } from "@/schemas/schemas";
+import { createRooms, updateRooms } from "@/app/actions/actions";
 
-function PremisesBlock({ projectId }: { projectId: string }) {
+function PremisesBlock({
+  projectId,
+  roomsList,
+}: {
+  projectId: string;
+  roomsList: Premise[];
+}) {
+
   const [options, setOptions] = useState(roomList);
 
   const form = useForm<Premises>({
     resolver: zodResolver(PremisesSchema),
     defaultValues: {
-      rooms: [{ name: "", order: 1, project_id: projectId }],
+      rooms:
+        roomsList.length !== 0
+          ? roomsList
+          : [{ name: "", order: 1, project_id: projectId }],
     },
   });
-
+  // TODO: roomList - при открытии окна выводить уже имеющиеся помещения и при корректировке обновлять Suupabase
   const {
     fields: roomFields,
     append,
@@ -34,7 +44,7 @@ function PremisesBlock({ projectId }: { projectId: string }) {
 
   //? 3. Сохранение данных формы
   const onSubmit = (data: Premises) => {
-    createRooms(data);
+    roomsList.length !== 0 ? updateRooms(data) : createRooms(data);
   };
 
   const handleCreateOption = (inputValue: string, index: number) => {

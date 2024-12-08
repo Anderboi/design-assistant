@@ -32,7 +32,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="ru" className={fontSans.className} suppressHydrationWarning>
-      <body className="bg-background text-foreground">
+      <body className="bg-secondary text-foreground">
         <ThemeProvider
           attribute="class"
           defaultTheme="system"

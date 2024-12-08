@@ -192,13 +192,22 @@ export async function getProjectStages({ projectId }: { projectId: string }) {
 }
 
 export async function createRooms(data: Premises) {
-  console.log(data.rooms);
-
   const supabase = await createClient();
 
   const { data: PremisesData, error: PremisesError } = await supabase
     .from("premises")
     .insert(data.rooms);
+
+  if (PremisesError) {
+    console.error("Error create premises:", PremisesError);
+  }
+}
+export async function updateRooms(data: Premises) {
+  const supabase = await createClient();
+
+  const { data: PremisesData, error: PremisesError } = await supabase
+    .from("premises")
+    .update(data.rooms);
 
   if (PremisesError) {
     console.error("Error create premises:", PremisesError);

@@ -36,7 +36,7 @@ function DemolitionBlock() {
 
   return (
     <Form {...form}>
-      <form className="space-y-6" onSubmit={form.handleSubmit(onSubmit)}>
+      <form className="space-y-4" onSubmit={form.handleSubmit(onSubmit)}>
         {/* <div className="space-y-4 rounded-lg border p-4 dark:border-neutral-600 sm:col-span-2"> */}
         <FormBlock title="">
           <FormField

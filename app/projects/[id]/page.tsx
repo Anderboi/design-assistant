@@ -5,6 +5,7 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { staticStagesTemplate } from "@/lib/templates";
 import Icon from "@/components/Icon";
+import BlockHeaderWithNav from "./brief/_components/BlockHeaderWithNav";
 
 async function ProjectPage({
   searchParams,
@@ -40,9 +41,8 @@ async function ProjectPage({
   );
 
   return (
-    <div className="flex w-full flex-col gap-2">
-      <h1 className="pb-4 text-3xl font-bold">Стадии</h1>
-
+    <section className="flex w-full flex-col gap-2">
+      <BlockHeaderWithNav title="Стадии" />
       {stagesWithCompletion.map((stage, index) =>
         stage.type === "action" ? (
           <Button key={index} disabled={stage.stage_status === "blocked"}>
@@ -53,7 +53,7 @@ async function ProjectPage({
             key={index}
             href={`${projectId}/${stage.href}?projectId=${projectId}` || ""}
             replace={false}
-            className={`${stage.stage_status === "blocked" ? "cursor-not-allowed bg-secondary" : "border hover:shadow-lg"} rounded-xl p-6`}
+            className={`${stage.stage_status === "blocked" ? "cursor-not-allowed border bg-secondary" : "//border bg-background hover:shadow-lg"} rounded-xl p-6`}
           >
             <div className="flex items-start space-x-4">
               <Icon
@@ -81,7 +81,7 @@ async function ProjectPage({
           </Link>
         ),
       )}
-    </div>
+    </section>
   );
 }
 

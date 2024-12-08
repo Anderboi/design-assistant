@@ -16,15 +16,15 @@ export function StyledDialog({
   children: React.ReactNode;
 }) {
   return (
-    <DialogContent className="h-full max-h-[90vh] overflow-y-scroll rounded-xl no-scrollbar sm:max-w-[520px]">
-      <DialogHeader className="sticky top-0 z-40 flex h-fit flex-row items-center justify-between rounded-lg bg-secondary px-4">
+    <DialogContent className="h-full max-h-[90vh] overflow-y-scroll rounded-xl bg-secondary no-scrollbar sm:max-w-[520px]">
+      <DialogHeader className="sticky top-0 z-40 flex h-fit flex-row items-center justify-between rounded-xl bg-background px-4 shadow-cardshadow">
         <DialogTitle>{title}</DialogTitle>
         <DialogDescription className="hidden"></DialogDescription>
         <DialogClose className="!mt-0 h-full !space-y-0">
           <X className="h-6 w-6" />
         </DialogClose>
       </DialogHeader>
-      <section className="h-[calc(100%-56px)] pt-4">{children}</section>
+      <section className="h-[calc(100%-68px)] pt-4">{children}</section>
     </DialogContent>
   );
 }
@@ -35,7 +35,7 @@ export function StyledDialogFooter({
   children: React.ReactNode;
 }) {
   return (
-    <div className="sticky bottom-0 w-full rounded-lg bg-white p-4 shadow-card shadow-neutral-300">
+    <div className="sticky bottom-0 w-full rounded-xl bg-background p-4 shadow-cardshadow">
       {children}
     </div>
   );

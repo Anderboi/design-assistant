@@ -61,7 +61,7 @@ const config = {
         sm: "calc(var(--radius) - 4px)",
       },
       boxShadow: {
-        card: "0 0px 24px -4px hsl(var(--shadow))",
+        cardshadow: "0 0px 24px -4px hsl(var(--shadow))",
       },
       keyframes: {
         "accordion-down": {

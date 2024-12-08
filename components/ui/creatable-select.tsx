@@ -38,17 +38,17 @@ const StyledSelect: React.FC<StyledSelectProps> = ({
            !focused:ring-neutral-500 dark:bg-neutral-900 
            dark:!text-neutral-50 dark:!border-neutral-600`,
         input: () => "text-base sm:text-base dark:text-neutral-200",
-        singleValue: () => " dark:text-neutral-50",
-        placeholder: () => " dark:text-neutral-500",
-        menu: () => " dark:text-neutral-50 dark:!bg-neutral-800",
+        singleValue: () => "dark:text-neutral-50",
+        placeholder: () => "dark:text-neutral-500",
+        menu: () => "dark:text-neutral-50 dark:!bg-neutral-800",
 
         option: (state) =>
           state.isFocused
-            ? " dark:text-neutral-50 !bg-neutral-200 dark:!bg-neutral-600 !text-black"
+            ? "dark:text-neutral-50 !bg-neutral-200 dark:!bg-neutral-600 !text-black"
             : state.isSelected
               ? "!bg-neutral-500 hover:!bg-neutral-600"
               : "dark:!bg-neutral-800",
-        menuPortal: () => " dark:text-neutral-50 dark:!bg-neutral-800",
+        menuPortal: () => "dark:text-neutral-50 dark:!bg-neutral-800",
       }}
       formatCreateLabel={(value) => `Создать '${value}'`}
       createOptionPosition="last"
