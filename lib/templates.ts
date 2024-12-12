@@ -1,5 +1,15 @@
 import { Stage } from "@/types/types";
 
+export const optionsMaker = (data: string[]) => {
+  let newOptions: Option[] = [];
+
+  data.map((item) => {
+    newOptions.push({ label: item, value: item });
+  });
+
+  return newOptions;
+};
+
 //? шаблон стадий
 export const staticStagesTemplate: Stage[] = [
   {
@@ -291,15 +301,22 @@ export const purificationSystems: string[] = [
   "УФ очистка воды",
 ];
 
-export const optionsMaker = (data: string[]) => {
-  let newOptions: Option[] = [];
+export const furnitureList: string[] = [
+  "Диван",
+  "Кресло",
+  "Обеденный стол",
+  "Стул",
+  "Кровать",
+  "Комод",
+  "Шкаф",
+  "Тумба",
+  "Журнальный стол",
+  "Кухонный остров",
+  "Рабочий стол",
+];
 
-  data.map((item) => {
-    newOptions.push({ label: item, value: item });
-  });
+export const furnitureOptions = optionsMaker(furnitureList);
 
-  return newOptions;
-};
 
 export const equipmentOptions: Option[] = [
   { value: "Холодильник", label: "Холодильник", group: "Кухня" },

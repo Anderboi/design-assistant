@@ -12,7 +12,7 @@ export const ProjectSchema = z.object({
 });
 export type Project = z.infer<typeof ProjectSchema>;
 
-export const equipmentSchema = z.object({
+export const EquipmentSchema = z.object({
   id: z.string(),
   name: z.string(),
   url: z.string().url("Введите корректный URL").optional(),
@@ -28,7 +28,7 @@ export const equipmentSchema = z.object({
     .optional(),
   room_id: z.string().uuid(),
 });
-export type Equipment = z.infer<typeof equipmentSchema>;
+export type Equipment = z.infer<typeof EquipmentSchema>;
 
 export const PremiseSchema = z.object({
   id: z.string(),
@@ -36,7 +36,7 @@ export const PremiseSchema = z.object({
   order: z.coerce.number(),
   area: z.coerce.number().optional(),
   project_id: z.string(),
-  equipment: z.array(equipmentSchema).optional(),
+  equipment: z.array(EquipmentSchema).optional(),
 });
 export type Premise = z.infer<typeof PremiseSchema>;
 
@@ -45,6 +45,34 @@ export const PremisesSchema = z.object({
 });
 
 export type Premises = z.infer<typeof PremisesSchema>;
+
+export const ResidentsSchema = z.object({
+  adults: z
+    .array(
+      z.object({
+        height: z
+          .number({ invalid_type_error: "Введите рост числом" })
+          .positive("Рост должен быть положительным")
+          .lte(250, "Рост не может быть больше 250 см"),
+        gender: z.string(),
+      }),
+    )
+    .min(1, "Должен быть хотя бы один взрослый"),
+  children: z.array(
+    z.object({
+      age: z
+        .number({ invalid_type_error: "Введите возраст числом" })
+        .positive("Возраст должен быть положительным")
+        .lte(18, "Возраст должен быть меньше 18 лет"),
+    }),
+  ),
+  hobbies: z.string().optional(),
+  healthIssues: z.string().optional(),
+  hasPets: z.boolean(),
+  petDetails: z.string().optional(),
+});
+
+export type ResidentsFormValues = z.infer<typeof ResidentsSchema>;
 
 export const ConstructionInfoSchema = z.object({
   floor: z.array(

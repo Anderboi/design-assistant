@@ -6,7 +6,7 @@ import { useFieldArray, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import FormBlock from "@/components/ui/FormBlock";
 import { Button } from "@/components/ui/button";
-import StyledSelect from "@/components/ui/creatable-select";
+import StyledSelect from "@/components/ui/styled-creatable-select";
 import {
   ceilingMaterials,
   floorMaterials,
@@ -70,135 +70,52 @@ function ConstructionBlock({ roomList }: { roomList: Premise[] }) {
 
   return (
     <Form {...form}>
-      <form className="space-y-4" onSubmit={form.handleSubmit(onSubmit)}>
-        {/* Стены */}
-        <FormBlock title="Стены">
-          {wallFields.map((_, index) => (
-            <article key={index} className="space-y-4">
-              <FormField
-                control={form.control}
-                name={`walls.${index}.material`}
-                render={({ field }) => (
-                  <FormItem>
-                    <FormControl>
-                      <div className="flex w-full gap-2">
-                        <StyledSelect
-                          className="w-full flex-grow"
-                          options={wallOptions}
-                          value={
-                            wallOptions.find(
-                              (option) => option.value === field.value,
-                            ) || null
-                          }
-                          onChange={(val) => field.onChange(val)}
-                        />
-                        <Button
-                          type="button"
-                          variant={"destructive"}
-                          onClick={() => removeWall(index)}
-                          size={"sm"}
-                        >
-                          <Trash2Icon size={20} />
-                        </Button>
-                      </div>
-                    </FormControl>
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name={`walls.${index}.rooms`}
-                render={({ field }) => (
-                  <FormItem>
-                    <FormControl>
-                      <div className="flex flex-wrap gap-2">
-                        {roomList.map((room, index) => (
-                          <SelectChip
-                            id={room.id}
-                            key={index}
-                            className="cursor-pointer"
-                            variant={
-                              field.value?.includes(room.id)
-                                ? "default"
-                                : "outline"
+      <form
+        className="flex h-full flex-col justify-between"
+        onSubmit={form.handleSubmit(onSubmit)}
+      >
+        <div className="space-y-4 pb-8">
+          {/* Стены */}
+          <FormBlock title="Стены">
+            {wallFields.map((_, index) => (
+              <article key={index} className="space-y-4">
+                <FormField
+                  control={form.control}
+                  name={`walls.${index}.material`}
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormControl>
+                        <div className="flex w-full gap-2">
+                          <StyledSelect
+                            className="w-full flex-grow"
+                            options={wallOptions}
+                            value={
+                              wallOptions.find(
+                                (option) => option.value === field.value,
+                              ) || null
                             }
-                            onClick={() => {
-                              field.onChange(
-                                field.value?.includes(room.id)
-                                  ? field.value.filter(
-                                      (v: string) => v !== room.id,
-                                    )
-                                  : [...(field.value || []), room.id],
-                              );
-                            }}
+                            onChange={(val) => field.onChange(val)}
+                          />
+                          <Button
+                            type="button"
+                            variant={"destructive"}
+                            onClick={() => removeWall(index)}
+                            size={"sm"}
                           >
-                            {`${room.order}. ${room.name}`}
-                          </SelectChip>
-                        ))}
-                      </div>
-                    </FormControl>
-                  </FormItem>
-                )}
-              />
-            </article>
-          ))}
-          <Button
-            variant="secondary"
-            className="w-full"
-            onClick={() =>
-              appendWall({
-                material: "",
-                id: wallFields.length + 1,
-                rooms: [],
-              })
-            }
-          >
-            Добавить материал
-          </Button>
-        </FormBlock>
-
-        {/* Напольные покрытия */}
-        <FormBlock title="Напольные покрытия">
-          {floorFields.map((_, index) => (
-            <article key={index} className="space-y-4">
-              <FormField
-                control={form.control}
-                name={`floor.${index}.material`}
-                render={({ field }) => (
-                  <FormItem>
-                    <FormControl>
-                      <div className="flex w-full gap-2">
-                        <StyledSelect
-                          className="w-full flex-grow"
-                          options={floorOptions}
-                          value={
-                            floorOptions.find(
-                              (option) => option.value === field.value,
-                            ) || null
-                          }
-                          onChange={(val) => field.onChange(val)}
-                        />
-                        <Button
-                          type="button"
-                          variant={"destructive"}
-                          onClick={() => removeFloor(index)}
-                          size={"sm"}
-                        >
-                          <Trash2Icon size={20} />
-                        </Button>
-                      </div>
-                    </FormControl>
-                  </FormItem>
-                )}
-              />
-              <div className="flex flex-wrap gap-1">
+                            <Trash2Icon size={20} />
+                          </Button>
+                        </div>
+                      </FormControl>
+                    </FormItem>
+                  )}
+                />
                 <FormField
                   control={form.control}
-                  name={`floor.${index}.rooms`}
+                  name={`walls.${index}.rooms`}
                   render={({ field }) => (
                     <FormItem>
                       <FormControl>
-                        <div className="flex flex-wrap gap-1">
+                        <div className="flex flex-wrap gap-2">
                           {roomList.map((room, index) => (
                             <SelectChip
                               id={room.id}
@@ -227,112 +144,199 @@ function ConstructionBlock({ roomList }: { roomList: Premise[] }) {
                     </FormItem>
                   )}
                 />
-              </div>
-            </article>
-          ))}
-          <Button
-            variant="secondary"
-            className="w-full"
-            onClick={() =>
-              appendFloor({
-                material: "",
-                id: floorFields.length + 1,
-                rooms: [],
-              })
-            }
-          >
-            Добавить материал
-          </Button>
-        </FormBlock>
+              </article>
+            ))}
+            <Button
+              variant="secondary"
+              className="w-full"
+              onClick={() =>
+                appendWall({
+                  material: "",
+                  id: wallFields.length + 1,
+                  rooms: [],
+                })
+              }
+            >
+              Добавить материал
+            </Button>
+          </FormBlock>
 
-        {/* Потолок */}
-        <FormBlock title="Потолок">
-          {ceilingFields.map((_, index) => (
-            <article key={index} className="space-y-4">
-              <FormField
-                control={form.control}
-                name={`ceiling.${index}.material`}
-                render={({ field }) => (
-                  <FormItem>
-                    <FormControl>
-                      <div className="flex w-full gap-2">
-                        <StyledSelect
-                          className="w-full flex-grow"
-                          options={ceilingOptions}
-                          value={
-                            ceilingOptions.find(
-                              (option) => option.value === field.value,
-                            ) || null
-                          }
-                          onChange={(val) => field.onChange(val)}
-                        />
-                        <Button
-                          type="button"
-                          variant={"destructive"}
-                          onClick={() => removeCeiling(index)}
-                          size={"sm"}
-                        >
-                          <Trash2Icon size={20} />
-                        </Button>
-                      </div>
-                    </FormControl>
-                  </FormItem>
-                )}
-              />
-              <div className="flex flex-wrap gap-1">
+          {/* Напольные покрытия */}
+          <FormBlock title="Напольные покрытия">
+            {floorFields.map((_, index) => (
+              <article key={index} className="space-y-4">
                 <FormField
                   control={form.control}
-                  name={`ceiling.${index}.rooms`}
+                  name={`floor.${index}.material`}
                   render={({ field }) => (
                     <FormItem>
                       <FormControl>
-                        <div className="flex flex-wrap gap-1">
-                          {roomList.map((room, index) => (
-                            <SelectChip
-                              id={room.id}
-                              key={index}
-                              className="cursor-pointer"
-                              variant={
-                                field.value?.includes(room.id)
-                                  ? "default"
-                                  : "outline"
-                              }
-                              onClick={() => {
-                                field.onChange(
-                                  field.value?.includes(room.id)
-                                    ? field.value.filter(
-                                        (v: string) => v !== room.id,
-                                      )
-                                    : [...(field.value || []), room.id],
-                                );
-                              }}
-                            >
-                              {`${room.order}. ${room.name}`}
-                            </SelectChip>
-                          ))}
+                        <div className="flex w-full gap-2">
+                          <StyledSelect
+                            className="w-full flex-grow"
+                            options={floorOptions}
+                            value={
+                              floorOptions.find(
+                                (option) => option.value === field.value,
+                              ) || null
+                            }
+                            onChange={(val) => field.onChange(val)}
+                          />
+                          <Button
+                            type="button"
+                            variant={"destructive"}
+                            onClick={() => removeFloor(index)}
+                            size={"sm"}
+                          >
+                            <Trash2Icon size={20} />
+                          </Button>
                         </div>
                       </FormControl>
                     </FormItem>
                   )}
                 />
-              </div>
-            </article>
-          ))}
-          <Button
-            variant="secondary"
-            className="w-full"
-            onClick={() =>
-              appendCeiling({
-                material: "",
-                id: ceilingFields.length + 1,
-                rooms: [],
-              })
-            }
-          >
-            Добавить материал
-          </Button>
-        </FormBlock>
+                <div className="flex flex-wrap gap-1">
+                  <FormField
+                    control={form.control}
+                    name={`floor.${index}.rooms`}
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormControl>
+                          <div className="flex flex-wrap gap-1">
+                            {roomList.map((room, index) => (
+                              <SelectChip
+                                id={room.id}
+                                key={index}
+                                className="cursor-pointer"
+                                variant={
+                                  field.value?.includes(room.id)
+                                    ? "default"
+                                    : "outline"
+                                }
+                                onClick={() => {
+                                  field.onChange(
+                                    field.value?.includes(room.id)
+                                      ? field.value.filter(
+                                          (v: string) => v !== room.id,
+                                        )
+                                      : [...(field.value || []), room.id],
+                                  );
+                                }}
+                              >
+                                {`${room.order}. ${room.name}`}
+                              </SelectChip>
+                            ))}
+                          </div>
+                        </FormControl>
+                      </FormItem>
+                    )}
+                  />
+                </div>
+              </article>
+            ))}
+            <Button
+              variant="secondary"
+              className="w-full"
+              onClick={() =>
+                appendFloor({
+                  material: "",
+                  id: floorFields.length + 1,
+                  rooms: [],
+                })
+              }
+            >
+              Добавить материал
+            </Button>
+          </FormBlock>
 
+          {/* Потолок */}
+          <FormBlock title="Потолок">
+            {ceilingFields.map((_, index) => (
+              <article key={index} className="space-y-4">
+                <FormField
+                  control={form.control}
+                  name={`ceiling.${index}.material`}
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormControl>
+                        <div className="flex w-full gap-2">
+                          <StyledSelect
+                            className="w-full flex-grow"
+                            options={ceilingOptions}
+                            value={
+                              ceilingOptions.find(
+                                (option) => option.value === field.value,
+                              ) || null
+                            }
+                            onChange={(val) => field.onChange(val)}
+                          />
+                          <Button
+                            type="button"
+                            variant={"destructive"}
+                            onClick={() => removeCeiling(index)}
+                            size={"sm"}
+                          >
+                            <Trash2Icon size={20} />
+                          </Button>
+                        </div>
+                      </FormControl>
+                    </FormItem>
+                  )}
+                />
+                <div className="flex flex-wrap gap-1">
+                  <FormField
+                    control={form.control}
+                    name={`ceiling.${index}.rooms`}
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormControl>
+                          <div className="flex flex-wrap gap-1">
+                            {roomList.map((room, index) => (
+                              <SelectChip
+                                id={room.id}
+                                key={index}
+                                className="cursor-pointer"
+                                variant={
+                                  field.value?.includes(room.id)
+                                    ? "default"
+                                    : "outline"
+                                }
+                                onClick={() => {
+                                  field.onChange(
+                                    field.value?.includes(room.id)
+                                      ? field.value.filter(
+                                          (v: string) => v !== room.id,
+                                        )
+                                      : [...(field.value || []), room.id],
+                                  );
+                                }}
+                              >
+                                {`${room.order}. ${room.name}`}
+                              </SelectChip>
+                            ))}
+                          </div>
+                        </FormControl>
+                      </FormItem>
+                    )}
+                  />
+                </div>
+              </article>
+            ))}
+            <Button
+              variant="secondary"
+              className="w-full"
+              onClick={() =>
+                appendCeiling({
+                  material: "",
+                  id: ceilingFields.length + 1,
+                  rooms: [],
+                })
+              }
+            >
+              Добавить материал
+            </Button>
+          </FormBlock>
+        </div>
         {/* Кнопка отправки */}
         <StyledDialogFooter>
           <Button type="submit" className="w-full">

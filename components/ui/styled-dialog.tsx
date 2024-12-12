@@ -24,7 +24,7 @@ export function StyledDialog({
           <X className="h-6 w-6" />
         </DialogClose>
       </DialogHeader>
-      <section className="h-[calc(100%-68px)] pt-4">{children}</section>
+      <section className="h-[calc(100%-56px)] pt-4">{children}</section>
     </DialogContent>
   );
 }
