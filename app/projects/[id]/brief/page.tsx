@@ -11,6 +11,7 @@ import { StyledDialog } from "@/components/ui/styled-dialog";
 import EngeneeringSystemsBlock from "./(blocks)/EngeneeringSystemsBlock";
 import { getProjectRooms } from "@/app/actions/actions";
 import EquipmentBlock from "./(blocks)/EquipmentBlock";
+import CommonData from "./(blocks)/CommonData";
 
 async function BriefPage({
   searchParams,
@@ -19,7 +20,7 @@ async function BriefPage({
     projectId: string;
   };
 }) {
-  const { projectId } = await searchParams;
+  const { projectId } =  searchParams;
 
   const technicalTaskStage = staticStagesTemplate.find(
     (stage) => stage.title === "Техническое задание",
@@ -32,8 +33,6 @@ async function BriefPage({
   }
 
   const roomList = await getProjectRooms(projectId);
-
-  // const stageBlocks = await fetchStageBlocks(stageId);
 
   return (
     <>
@@ -49,20 +48,32 @@ async function BriefPage({
               </div>
             </DialogTrigger>
             <StyledDialog title={block.name}>
+              {block.name === "Общие данные" && (
+                <CommonData projectId={projectId} />
+              )}
               {block.name === "Информация о проживающих" && <ResidentsBlock />}
               {block.name === "Перечень помещений" && (
                 <PremisesBlock projectId={projectId} roomsList={roomList} />
               )}
               {block.name === "Информация по демонтажу" && <DemolitionBlock />}
-              {block.name === "Информация по монтажу" && (
-                <ConstructionBlock roomList={roomList} />
-              )}
-              {block.name === "Инженерные системы" && (
-                <EngeneeringSystemsBlock roomList={roomList} />
-              )}
-              {block.name === "Отделка и оборудование" && (
-                <EquipmentBlock roomList={roomList} />
-              )}
+              {block.name === "Информация по монтажу" &&
+                (roomList.length <= 0 ? (
+                  <strong>Добавьте помещения</strong>
+                ) : (
+                  <ConstructionBlock roomList={roomList} />
+                ))}
+              {block.name === "Инженерные системы" &&
+                (roomList.length <= 0 ? (
+                  <strong>Добавьте помещения</strong>
+                ) : (
+                  <EngeneeringSystemsBlock roomList={roomList} />
+                ))}
+              {block.name === "Отделка и оборудование" &&
+                (roomList.length <= 0 ? (
+                  <strong>Добавьте помещения</strong>
+                ) : (
+                  <EquipmentBlock roomList={roomList} />
+                ))}
             </StyledDialog>
           </Dialog>
 

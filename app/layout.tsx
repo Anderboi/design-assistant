@@ -20,7 +20,8 @@ const fontSans = Commissioner({
 });
 
 export const metadata = {
-  metadataBase: new URL(defaultUrl),
+  // metadataBase: new URL(defaultUrl),
+  metadataBase: "http://localhost:3000",
   title: "Design Assistant",
   description: "The easiest way for interior designers",
 };

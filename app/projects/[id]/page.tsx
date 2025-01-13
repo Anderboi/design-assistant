@@ -7,6 +7,10 @@ import { staticStagesTemplate } from "@/lib/templates";
 import Icon from "@/components/Icon";
 import BlockHeaderWithNav from "./brief/_components/BlockHeaderWithNav";
 
+export const revalidate = 0;
+
+// export const dynamic = "force-dynamic";
+
 async function ProjectPage({
   searchParams,
 }: {

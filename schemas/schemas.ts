@@ -1,5 +1,6 @@
 import { z } from "zod";
 
+// ? Проект
 export const ProjectSchema = z.object({
   id: z.string().optional(),
   address: z.string().min(2, { message: "Должно быть минимум 2 знака" }),
@@ -12,6 +13,17 @@ export const ProjectSchema = z.object({
 });
 export type Project = z.infer<typeof ProjectSchema>;
 
+// ? Общие данные
+export const CommonDataSchema = z.object({
+  address: z.string().min(1, "Введите адрес"),
+  area: z.coerce.number().min(1, "Введите площадь"),
+  contractNumber: z.string().optional(),
+  startDate: z.date().optional(),
+  finalDate: z.date().optional(),
+});
+export type CommonDataType = z.infer<typeof CommonDataSchema>;
+
+// ? Оборудование
 export const EquipmentSchema = z.object({
   id: z.string(),
   name: z.string(),
@@ -30,6 +42,7 @@ export const EquipmentSchema = z.object({
 });
 export type Equipment = z.infer<typeof EquipmentSchema>;
 
+// ? Помещение
 export const PremiseSchema = z.object({
   id: z.string(),
   name: z.string().min(1, "Необходимо укащать название"),
@@ -40,12 +53,13 @@ export const PremiseSchema = z.object({
 });
 export type Premise = z.infer<typeof PremiseSchema>;
 
+// ? Помещения
 export const PremisesSchema = z.object({
   rooms: z.array(PremiseSchema).min(1, "Добавьте хотя бы одно помещение"),
 });
-
 export type Premises = z.infer<typeof PremisesSchema>;
 
+// ? Резиденты
 export const ResidentsSchema = z.object({
   adults: z
     .array(
@@ -71,9 +85,9 @@ export const ResidentsSchema = z.object({
   hasPets: z.boolean(),
   petDetails: z.string().optional(),
 });
-
 export type ResidentsFormValues = z.infer<typeof ResidentsSchema>;
 
+// ? Монтаж
 export const ConstructionInfoSchema = z.object({
   floor: z.array(
     z
@@ -103,6 +117,7 @@ export const ConstructionInfoSchema = z.object({
 });
 export type ConstructionFormValues = z.infer<typeof ConstructionInfoSchema>;
 
+// ? Демонтаж
 export const DemolitionSchema = z.object({
   planChange: z.boolean().optional(),
   planChangeInfo: z.string().optional(),
@@ -115,6 +130,7 @@ export const DemolitionSchema = z.object({
 });
 export type DemolitionType = z.infer<typeof DemolitionSchema>;
 
+// ? Инженерные Системы
 export const EngineeringSystemsSchema = z.object({
   heatingSystem: z
     .array(

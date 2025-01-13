@@ -11,6 +11,8 @@ import { Plus } from "lucide-react";
 import Link from "next/link";
 import { getAllProjects } from "../actions/actions";
 
+export const revalidate = 0;
+
 export default async function Page() {
   const projects = await getAllProjects();
 

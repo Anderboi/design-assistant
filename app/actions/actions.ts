@@ -1,7 +1,7 @@
 "use server";
 
 import { staticStagesTemplate } from "@/lib/templates";
-import { Premises, Project, ProjectSchema } from "@/schemas/schemas";
+import { Premises, Project } from "@/schemas/schemas";
 import { createClient } from "@/utils/supabase/server";
 import { redirect } from "next/navigation";
 import { v4 as uuidv4 } from "uuid";
